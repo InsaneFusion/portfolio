@@ -1,46 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project Showcase</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- ================= HERO ================= -->
 <section class="hero">
-    <h1>Project Name</h1>
-    <p>Gameplay & Technical Design Prototype</p>
+  <video autoplay muted loop id="hero-video">
+    <source src="media/hero.mp4" type="video/mp4">
+  </video>
 
-    <video autoplay muted loop playsinline>
-        <source src="media/video.mp4" type="video/mp4">
+  <div class="hero-overlay">
+    <h1>Gameplay Designer & Technical Animator</h1>
+    <p>Systems-driven design · Non-intrusive UI · Expressive animation</p>
+    <a href="#project" class="btn">View Project</a>
+  </div>
+</section>
+
+
+<!-- ================= PROJECT ================= -->
+<section id="project" class="section">
+
+  <h2>Main Project</h2>
+
+  <!-- MAIN VIDEO -->
+  <div class="block">
+    <video controls>
+      <source src="media/gameplay.mp4" type="video/mp4">
     </video>
-</section>
+  </div>
 
-<section class="content">
-    <h2>Overview</h2>
+  <!-- QUICK SUMMARY -->
+  <div class="block">
     <p>
-        Short description of the project. Focus on what makes it interesting.
+      Short description of the project: what it is, what makes it different,
+      and what your role was.
     </p>
-</section>
-
-<section class="content">
-    <h2>Systems</h2>
-
-    <div class="block">
-        <h3>Status Effect System</h3>
-        <img src="media/gif1.gif">
-        <p>Short explanation.</p>
-    </div>
-
-    <div class="block">
-        <h3>Dialogue System</h3>
-        <img src="media/gif2.gif">
-        <p>Short explanation.</p>
-    </div>
+  </div>
 
 </section>
+
+
+<!-- ================= SYSTEMS ================= -->
+<section class="section">
+
+  <h2>Systems Breakdown</h2>
+
+  <!-- SYSTEM 1 -->
+  <div class="system">
+    <h3>Non-intrusive Dialogue</h3>
+    <img src="media/dialogue.gif">
+    <p>Explain the system briefly and what problem it solves.</p>
+  </div>
+
+  <!-- SYSTEM 2 -->
+  <div class="system">
+    <h3>Facial Expression System</h3>
+    <img src="media/facial.gif">
+    <p>How expressions react dynamically to gameplay.</p>
+  </div>
+
+  <!-- SYSTEM 3 -->
+  <div class="system">
+    <h3>Layered Status Effects</h3>
+    <img src="media/status.gif">
+    <p>Stackable visual effects designed for clarity.</p>
+  </div>
+
+  <!-- SYSTEM 4 -->
+  <div class="system">
+    <h3>Non-intrusive UI</h3>
+    <img src="media/ui.gif">
+    <p>Information without interrupting control.</p>
+  </div>
+
+</section>
+
+
+<!-- ================= DESIGN DECISIONS ================= -->
+<section class="section">
+
+  <h2>Design Decisions</h2>
+
+  <div class="decision">
+    <p><strong>Problem:</strong> Describe problem</p>
+    <p><strong>Solution:</strong> Your approach</p>
+    <p><strong>Result:</strong> Outcome</p>
+  </div>
+
+  <div class="decision">
+    <p><strong>Problem:</strong> Another problem</p>
+    <p><strong>Solution:</strong> Your approach</p>
+    <p><strong>Result:</strong> Outcome</p>
+  </div>
+
+</section>
+
+
+<!-- ================= TECH / LOGIC ================= -->
+<section class="section">
+
+  <h2>System Logic</h2>
+
+  <div class="block">
+    <img src="media/diagram.png">
+    <p>Explain flow or architecture in simple terms.</p>
+  </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+<section class="section">
+
+  <h2>About</h2>
+  <p>
+    Short bio: what you do, your focus, and what you're looking for.
+  </p>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+<section class="section">
+
+  <h2>Contact</h2>
+  <p>Email: your@email.com</p>
+
+</section>
+
 
 </body>
 </html>
