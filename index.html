@@ -87,32 +87,65 @@
   <h2>Design Decisions</h2>
   <div class="decision">
     <p><strong>Problem:</strong> Prevencion de estrategia dominante.</p>
-    <p><strong>Solution:</strong> El planteo de enemigos en Peacemakers Mayhem es distinto al de un run and gun tradicional, dado que no funcionaria del mismo modo en un juego cuyo input de apuntado viene de un mouse.\n
-El jugador tiene a su disposición infinitas diagonales para apuntar a su objetivo, y reducir o entorpecer esto de algun modo es directamente eliminar el proposito del mouse.\n
-Por lo tanto el balance debe venir de otro elemento del gameplay.\n
+    <p><strong>Solution:</strong> El planteo de enemigos en Peacemakers Mayhem es distinto al de un run and gun tradicional, dado que no funcionaria del mismo modo en un juego cuyo input de apuntado viene de un mouse.<br>
+El jugador tiene a su disposición infinitas diagonales para apuntar a su objetivo, y reducir o entorpecer esto de algun modo es directamente eliminar el proposito del mouse.<br>
+Por lo tanto el balance debe venir de otro elemento del gameplay.<br>
 
-La solucion fue hacer excluyentes los enfoques del jugador.\n
+La solucion fue hacer excluyentes los enfoques del jugador.<br>
 
-- Un estado activo y ofensivo, que ofrece movilidad y una hitbox de tamaño estándar, siendo este el estado base.\n
-- Un estado enteramente defensivo (agacharse) que impida ataque pero tambien desplazamiento, a costa de reducir el tamaño de la hitbox.\n
-- Un tercer estado que inhiba el ataque pero no asi el movimiento (recarga). La hitbox conserva su tamaño normal. Este estado a su vez balancea el poder ofensivo de los personajes entre si, y permite una transicion libre entre si y el segundo.\n
+- Un estado activo y ofensivo, que ofrece movilidad y una hitbox de tamaño estándar, siendo este el estado base.<br>
+- Un estado enteramente defensivo (agacharse) que impida ataque pero tambien desplazamiento, a costa de reducir el tamaño de la hitbox.<br>
+- Un tercer estado que inhiba el ataque pero no asi el movimiento (recarga). La hitbox conserva su tamaño normal. Este estado a su vez balancea el poder ofensivo de los personajes entre si, y permite una transicion libre entre si y el segundo.<br>
 
 </p>
-    <p><strong>Result:</strong> Ademas de resolver el problema de una estrategia dominante, crea un ritmo de juego natural entre momentos de ataque y defensa, lo que general un estado de flow y un skill-ceilling organico, dado que la practica ayuda a tomar mejores decisiones en entornos de presion. Además, esta configuracion refuerza la dependencia del jugador a sus npc asistentes, recompensando una seleccion bien planeada con un mejor rendimiento.\n 
+    <p><strong>Result:</strong> Ademas de resolver el problema de una estrategia dominante, crea un ritmo de juego natural entre momentos de ataque y defensa, lo que general un estado de flow y un skill-ceilling organico, dado que la practica ayuda a tomar mejores decisiones en entornos de presion. Además, esta configuracion refuerza la dependencia del jugador a sus npc asistentes, recompensando una seleccion bien planeada con un mejor rendimiento.<br> 
 
-Como si fuera poco, crea ventanas donde la creacion de enemigos se hace practicamente sola, simplemente atacando uno de los pilares que sostiene estas tres posibilidades:\n
+Como si fuera poco, crea ventanas donde la creacion de enemigos se hace practicamente sola, simplemente atacando uno de los pilares que sostiene estas tres posibilidades:<br>
 
-- Un Sniper enemigo penaliza una ofensiva deficiente o demorada.\n
-- Un enemigo negador de area penaliza la defensa estatica.\n
-- Un enemigo rapido penaliza la recarga a destiempo.\n
+- Un Sniper enemigo penaliza una ofensiva deficiente o demorada.<br>
+- Un enemigo negador de area penaliza la defensa estatica.<br>
+- Un enemigo rapido penaliza la recarga a destiempo.<br>
 
 Cabe mencionar que estos elementos se dan combinados en la mayoria de los casos.</p>
   </div>
 
   <div class="decision">
-    <p><strong>Problem:</strong> Another problem</p>
-    <p><strong>Solution:</strong> Your approach</p>
-    <p><strong>Result:</strong> Outcome</p>
+    <p><strong>Problem:</strong> Ilustracion de estados.</p>
+    <p><strong>Solution:</strong> Un pilar fundamental de Peacemakers Mayhem es la combinatoria de estados. El juego parte de la premisa de que cada elemento del roster aporta una ventaja pasiva y una mecanica activa diferente. Sin embargo dado que el juego es visualmente caotico por diseño, ilustrar estos estados fue desafiante.<br> 
+
+La solucion inicial explorada fue comprometer la señaletica del juego, usando colores para cada elemento. Esto al final demostro ser mas contraproducente y caotico. Ciertas mezclas de color acababan por ocultar otras, y la oclusion de informacion en este juego es simplemente inaceptable.<br>
+
+Es entonces que acabe diseñando 6 auras de efecto distintas, una para cada estado, pensadas especificamente para ilustrar con claridad cual son, incluso siendo superpuestas. Dado que el numero maximo de efectos en conjunto es 3, son 20 posibilidades. Cada una de ellas es lo bastante distinguible en todo momento, y comunica de manera inequivoca un estado alterado positivo.</p>
+
+    <p><strong>Result:</strong> La identidad de cada personaje se reafirma con el uso y la frecuencia del mismo permite asociaciones rapidas. El estilo construye sobre reglas previas sin atropellar o tornar confuso el funcionamiento, la combinatoria de particulas permite identificar los estados activos tras una exposicion corta.</p>
+  </div>
+
+ <div class="decision">
+    <p><strong>Problem:</strong> Interfaz.</p>
+    <p><strong>Solution:</strong> El UI fue un elemento que de inmediato llamo mi atencion. La convencion suele ser ilustrar al jugador su estado en la esquina superior izquierda, o en su defecto mediante barras e informacion justo sobre su avatar en la mayoria de juegos del genero.<br> 
+Esto funciona gracias a la convencion, pero Peacemakers Mayhem debe entregar al jugador mas informacion:<br>
+
+- Salud actual<br>
+- Personaje en control<br>
+- Municion actual<br>
+- Estado de habilidad 1<br>
+- Estado de habilidad 2<br>
+- Estado de habilidad 3<br>
+
+Una barra con toda esta informacion es impracticable en pantalla, insuficiente al resumirse, y lenta de leer en la esquina superior izquierda. Luego de varias pruebas, el resultado es ubicarla debajo del jugador, en la parte inferior central de la pantalla. Esto responde a varias razones:<br>
+
+- Esta cerca del avatar, que sera visto muy seguido dado que la evasion es una parte integral del juego.<br>
+- Se corresponde con un area segura: El jugador no puede ser atacado desde abajo a menos que activamente salte sobre un enemigo, en cuyo caso es redundante.<br>
+- Se corresponde con un area inaccesible: El angulo de ataque del jugador se limita a partir de cierto angulo inferior, nuevamente, no se pueden responder ataques a traves del suelo.<br>
+
+Adicionalmente, decidi añadir redundancia a la informacion.<br>
+
+    <p><strong>Result:</strong> - El estado de las habilidades es visible no solo en el aura del avatar, sino tambien en el HUD.<br>
+- El estado de recarga/agacharse que inhibe atacar es visible en la linea de mira y la reticula del jugador que se tiñe de rojo (siguiendo la señaletica del diseño)<br>
+- El estado de salud de los personajes es apreciable en sus expresiones faciales.<br>
+- Las animaciones reflejan cada uno de estos estados.<br>
+La informacion llega de forma simultanea desde varios canales, ademas del sonoro, desde el cual eventos como el daño, efectos o estados, tienen sonidos de notificacion asignados.<br>
+</p>
   </div>
 
 </section>
