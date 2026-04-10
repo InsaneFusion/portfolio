@@ -85,11 +85,28 @@
 <section class="section">
 
   <h2>Design Decisions</h2>
-
   <div class="decision">
-    <p><strong>Problem:</strong> Describe problem</p>
-    <p><strong>Solution:</strong> Your approach</p>
-    <p><strong>Result:</strong> Outcome</p>
+    <p><strong>Problem:</strong> Prevencion de estrategia dominante.</p>
+    <p><strong>Solution:</strong> El planteo de enemigos en Peacemakers Mayhem es distinto al de un run and gun tradicional, dado que no funcionaria del mismo modo en un juego cuyo input de apuntado viene de un mouse.\n
+El jugador tiene a su disposición infinitas diagonales para apuntar a su objetivo, y reducir o entorpecer esto de algun modo es directamente eliminar el proposito del mouse.\n
+Por lo tanto el balance debe venir de otro elemento del gameplay.\n
+
+La solucion fue hacer excluyentes los enfoques del jugador.\n
+
+- Un estado activo y ofensivo, que ofrece movilidad y una hitbox de tamaño estándar, siendo este el estado base.\n
+- Un estado enteramente defensivo (agacharse) que impida ataque pero tambien desplazamiento, a costa de reducir el tamaño de la hitbox.\n
+- Un tercer estado que inhiba el ataque pero no asi el movimiento (recarga). La hitbox conserva su tamaño normal. Este estado a su vez balancea el poder ofensivo de los personajes entre si, y permite una transicion libre entre si y el segundo.\n
+
+</p>
+    <p><strong>Result:</strong> Ademas de resolver el problema de una estrategia dominante, crea un ritmo de juego natural entre momentos de ataque y defensa, lo que general un estado de flow y un skill-ceilling organico, dado que la practica ayuda a tomar mejores decisiones en entornos de presion. Además, esta configuracion refuerza la dependencia del jugador a sus npc asistentes, recompensando una seleccion bien planeada con un mejor rendimiento.\n 
+
+Como si fuera poco, crea ventanas donde la creacion de enemigos se hace practicamente sola, simplemente atacando uno de los pilares que sostiene estas tres posibilidades:\n
+
+- Un Sniper enemigo penaliza una ofensiva deficiente o demorada.\n
+- Un enemigo negador de area penaliza la defensa estatica.\n
+- Un enemigo rapido penaliza la recarga a destiempo.\n
+
+Cabe mencionar que estos elementos se dan combinados en la mayoria de los casos.</p>
   </div>
 
   <div class="decision">
