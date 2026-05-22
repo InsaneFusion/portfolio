@@ -1,188 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsaneFusion | Gameplay Designer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .hero-bg { background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%); }
+  </style>
 </head>
+<body class="bg-zinc-950 text-zinc-200">
 
-<body>
+  <!-- Hero -->
+  <section class="hero-bg py-24 text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4">InsaneFusion</h1>
+      <p class="text-2xl text-emerald-400 mb-6">Gameplay Designer & Technical Animator</p>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto">
+        Sistemas-driven design · UI no intrusiva · Animaciones expresivas
+      </p>
+      <div class="mt-10 flex justify-center gap-4">
+        <a href="#proyecto" class="bg-emerald-600 hover:bg-emerald-500 px-8 py-3 rounded-lg font-medium">
+          Ver Proyecto Principal
+        </a>
+        <a href="#contacto" class="border border-zinc-400 hover:bg-zinc-900 px-8 py-3 rounded-lg font-medium">
+          Contacto
+        </a>
+      </div>
+    </div>
+  </section>
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-  <video autoplay muted loop id="hero-video">
-    <source src="media/hero.mp4" type="video/mp4">
-  </video>
+  <!-- Proyecto Principal -->
+  <section id="proyecto" class="py-20 bg-zinc-900">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-8 text-center">Peacemakers Mayhem</h2>
+      
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <img src="assets/images/portada.jpg" alt="Peacemakers Mayhem" class="rounded-xl shadow-2xl w-full">
+        </div>
+        <div>
+          <p class="text-zinc-300 text-lg leading-relaxed">
+            <!-- Aquí pon una descripción corta y potente de tu juego -->
+            Peacemakers Mayhem es un twin-stick shooter 2D con énfasis en sistemas de estados, combinatoria y claridad visual en medio del caos.
+          </p>
+          <a href="#" class="inline-block mt-6 text-emerald-400 hover:text-emerald-300">
+            Ver más → 
+          </a>
+        </div>
+      </div>
 
-  <div class="hero-overlay">
-    <h1>Gameplay Designer & Technical Animator</h1>
-    <p>Systems-driven design · Non-intrusive UI · Expressive animation</p>
-    <a href="#project" class="btn">View Project</a>
-  </div>
-</section>
+      <!-- Secciones de sistemas -->
+      <div class="mt-16 grid md:grid-cols-2 gap-8">
+        <div class="bg-zinc-800 p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Diálogos No Intrusivos</h3>
+          <p class="text-zinc-400">Sistema que permite...</p>
+        </div>
+        <div class="bg-zinc-800 p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Sistema de Expresiones Faciales</h3>
+          <p class="text-zinc-400">Reacciones dinámicas según el estado del jugador.</p>
+        </div>
+        <!-- Añade más tarjetas según necesites -->
+      </div>
+    </div>
+  </section>
 
+  <!-- Design Decisions -->
+  <section class="py-20">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-10 text-center">Decisiones de Diseño</h2>
+      <!-- Aquí puedes pegar las partes buenas que ya tienes, pero mejor formateadas -->
+      <div class="space-y-12">
+        <div>
+          <h3 class="text-2xl font-semibold text-emerald-400">Estados del Jugador y Ritmo de Combate</h3>
+          <p class="mt-4 text-zinc-300">Tu texto sobre ofensivo / defensivo / recarga...</p>
+        </div>
+        <!-- Repite estructura para cada problema-solución-resultado -->
+      </div>
+    </div>
+  </section>
 
-<!-- ================= PROJECT ================= -->
-<section id="project" class="section">
+  <!-- About -->
+  <section class="py-20 bg-zinc-900">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-8">Sobre mí</h2>
+      <p class="text-lg text-zinc-300">
+        Soy un diseñador de gameplay apasionado por crear sistemas profundos pero accesibles...
+      </p>
+    </div>
+  </section>
 
-  <h2>Main Project</h2>
-
-  <!-- MAIN VIDEO -->
-  <div class="block">
-    <video controls>
-      <source src="media/gameplay.mp4" type="video/mp4">
-    </video>
-  </div>
-
-  <!-- QUICK SUMMARY -->
-  <div class="block">
-    <p>
-      Short description of the project: what it is, what makes it different,
-      and what your role was.
-    </p>
-  </div>
-
-</section>
-
-
-<!-- ================= SYSTEMS ================= -->
-<section class="section">
-
-  <h2>Systems Breakdown</h2>
-
-  <!-- SYSTEM 1 -->
-  <div class="system">
-    <h3>Non-intrusive Dialogue</h3>
-    <img src="media/dialogue.gif">
-    <p>Explain the system briefly and what problem it solves.</p>
-  </div>
-
-  <!-- SYSTEM 2 -->
-  <div class="system">
-    <h3>Facial Expression System</h3>
-    <img src="media/facial.gif">
-    <p>How expressions react dynamically to gameplay.</p>
-  </div>
-
-  <!-- SYSTEM 3 -->
-  <div class="system">
-    <h3>Layered Status Effects</h3>
-    <img src="media/status.gif">
-    <p>Stackable visual effects designed for clarity.</p>
-  </div>
-
-  <!-- SYSTEM 4 -->
-  <div class="system">
-    <h3>Non-intrusive UI</h3>
-    <img src="media/ui.gif">
-    <p>Information without interrupting control.</p>
-  </div>
-
-</section>
-
-
-<!-- ================= DESIGN DECISIONS ================= -->
-<section class="section">
-
-  <h2>Design Decisions</h2>
-  <div class="decision">
-    <p><strong>Problem:</strong> Prevencion de estrategia dominante.</p>
-    <p><strong>Solution:</strong> El planteo de enemigos en Peacemakers Mayhem es distinto al de un run and gun tradicional, dado que no funcionaria del mismo modo en un juego cuyo input de apuntado viene de un mouse.<br>
-El jugador tiene a su disposición infinitas diagonales para apuntar a su objetivo, y reducir o entorpecer esto de algun modo es directamente eliminar el proposito del mouse.<br>
-Por lo tanto el balance debe venir de otro elemento del gameplay.<br>
-
-La solucion fue hacer excluyentes los enfoques del jugador.<br>
-
-- Un estado activo y ofensivo, que ofrece movilidad y una hitbox de tamaño estándar, siendo este el estado base.<br>
-- Un estado enteramente defensivo (agacharse) que impida ataque pero tambien desplazamiento, a costa de reducir el tamaño de la hitbox.<br>
-- Un tercer estado que inhiba el ataque pero no asi el movimiento (recarga). La hitbox conserva su tamaño normal. Este estado a su vez balancea el poder ofensivo de los personajes entre si, y permite una transicion libre entre si y el segundo.<br>
-
-</p>
-    <p><strong>Result:</strong> Ademas de resolver el problema de una estrategia dominante, crea un ritmo de juego natural entre momentos de ataque y defensa, lo que general un estado de flow y un skill-ceilling organico, dado que la practica ayuda a tomar mejores decisiones en entornos de presion. Además, esta configuracion refuerza la dependencia del jugador a sus npc asistentes, recompensando una seleccion bien planeada con un mejor rendimiento.<br> 
-
-Como si fuera poco, crea ventanas donde la creacion de enemigos se hace practicamente sola, simplemente atacando uno de los pilares que sostiene estas tres posibilidades:<br>
-
-- Un Sniper enemigo penaliza una ofensiva deficiente o demorada.<br>
-- Un enemigo negador de area penaliza la defensa estatica.<br>
-- Un enemigo rapido penaliza la recarga a destiempo.<br>
-
-Cabe mencionar que estos elementos se dan combinados en la mayoria de los casos.</p>
-  </div>
-
-  <div class="decision">
-    <p><strong>Problem:</strong> Ilustracion de estados.</p>
-    <p><strong>Solution:</strong> Un pilar fundamental de Peacemakers Mayhem es la combinatoria de estados. El juego parte de la premisa de que cada elemento del roster aporta una ventaja pasiva y una mecanica activa diferente. Sin embargo dado que el juego es visualmente caotico por diseño, ilustrar estos estados fue desafiante.<br> 
-
-La solucion inicial explorada fue comprometer la señaletica del juego, usando colores para cada elemento. Esto al final demostro ser mas contraproducente y caotico. Ciertas mezclas de color acababan por ocultar otras, y la oclusion de informacion en este juego es simplemente inaceptable.<br>
-
-Es entonces que acabe diseñando 6 auras de efecto distintas, una para cada estado, pensadas especificamente para ilustrar con claridad cual son, incluso siendo superpuestas. Dado que el numero maximo de efectos en conjunto es 3, son 20 posibilidades. Cada una de ellas es lo bastante distinguible en todo momento, y comunica de manera inequivoca un estado alterado positivo.</p>
-
-    <p><strong>Result:</strong> La identidad de cada personaje se reafirma con el uso y la frecuencia del mismo permite asociaciones rapidas. El estilo construye sobre reglas previas sin atropellar o tornar confuso el funcionamiento, la combinatoria de particulas permite identificar los estados activos tras una exposicion corta.</p>
-  </div>
-
- <div class="decision">
-    <p><strong>Problem:</strong> Interfaz.</p>
-    <p><strong>Solution:</strong> El UI fue un elemento que de inmediato llamo mi atencion. La convencion suele ser ilustrar al jugador su estado en la esquina superior izquierda, o en su defecto mediante barras e informacion justo sobre su avatar en la mayoria de juegos del genero.<br> 
-Esto funciona gracias a la convencion, pero Peacemakers Mayhem debe entregar al jugador mas informacion:<br>
-
-- Salud actual<br>
-- Personaje en control<br>
-- Municion actual<br>
-- Estado de habilidad 1<br>
-- Estado de habilidad 2<br>
-- Estado de habilidad 3<br>
-
-Una barra con toda esta informacion es impracticable en pantalla, insuficiente al resumirse, y lenta de leer en la esquina superior izquierda. Luego de varias pruebas, el resultado es ubicarla debajo del jugador, en la parte inferior central de la pantalla. Esto responde a varias razones:<br>
-
-- Esta cerca del avatar, que sera visto muy seguido dado que la evasion es una parte integral del juego.<br>
-- Se corresponde con un area segura: El jugador no puede ser atacado desde abajo a menos que activamente salte sobre un enemigo, en cuyo caso es redundante.<br>
-- Se corresponde con un area inaccesible: El angulo de ataque del jugador se limita a partir de cierto angulo inferior, nuevamente, no se pueden responder ataques a traves del suelo.<br>
-
-Adicionalmente, decidi añadir redundancia a la informacion.<br>
-
-    <p><strong>Result:</strong> - El estado de las habilidades es visible no solo en el aura del avatar, sino tambien en el HUD.<br>
-- El estado de recarga/agacharse que inhibe atacar es visible en la linea de mira y la reticula del jugador que se tiñe de rojo (siguiendo la señaletica del diseño)<br>
-- El estado de salud de los personajes es apreciable en sus expresiones faciales.<br>
-- Las animaciones reflejan cada uno de estos estados.<br>
-La informacion llega de forma simultanea desde varios canales, ademas del sonoro, desde el cual eventos como el daño, efectos o estados, tienen sonidos de notificacion asignados.<br>
-</p>
-  </div>
-
-</section>
-
-
-<!-- ================= TECH / LOGIC ================= -->
-<section class="section">
-
-  <h2>System Logic</h2>
-
-  <div class="block">
-    <img src="media/diagram.png">
-    <p>Explain flow or architecture in simple terms.</p>
-  </div>
-
-</section>
-
-
-<!-- ================= ABOUT ================= -->
-<section class="section">
-
-  <h2>About</h2>
-  <p>
-    Short bio: what you do, your focus, and what you're looking for.
-  </p>
-
-</section>
-
-
-<!-- ================= CONTACT ================= -->
-<section class="section">
-
-  <h2>Contact</h2>
-  <p>Email: your@email.com</p>
-
-</section>
-
+  <!-- Contact -->
+  <section id="contacto" class="py-20 text-center">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">¿Hablamos?</h2>
+      <p class="text-zinc-400 mb-8">Estoy abierto a oportunidades en estudios de videojuegos.</p>
+      <a href="mailto:tu@email.com" class="text-emerald-400 text-xl hover:underline">
+        tu@email.com
+      </a>
+    </div>
+  </section>
 
 </body>
 </html>
