@@ -3,100 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InsaneFusion | Gameplay Designer</title>
+  <title>InsaneFusion | Systems & Interaction Designer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
     .hero-bg { background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%); }
+    .card-hover:hover { transform: translateY(-6px); transition: all 0.3s ease; }
   </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
 
   <!-- Hero -->
-  <section class="hero-bg py-24 text-center">
+  <section class="hero-bg py-28 text-center">
     <div class="max-w-4xl mx-auto px-6">
       <h1 class="text-5xl md:text-6xl font-bold mb-4">InsaneFusion</h1>
-      <p class="text-2xl text-emerald-400 mb-6">Gameplay Designer & Technical Animator</p>
+      <p class="text-2xl text-emerald-400 mb-6">Systems & Interaction Designer</p>
       <p class="text-xl text-zinc-400 max-w-2xl mx-auto">
-        Sistemas-driven design · UI no intrusiva · Animaciones expresivas
+        Diseño de sistemas complejos • Feedback intuitivo • Experiencias con consecuencias reales
       </p>
       <div class="mt-10 flex justify-center gap-4">
-        <a href="#proyecto" class="bg-emerald-600 hover:bg-emerald-500 px-8 py-3 rounded-lg font-medium">
+        <a href="#proyecto" class="bg-emerald-600 hover:bg-emerald-500 px-8 py-3 rounded-lg font-medium transition">
           Ver Proyecto Principal
         </a>
-        <a href="#contacto" class="border border-zinc-400 hover:bg-zinc-900 px-8 py-3 rounded-lg font-medium">
+        <a href="#contacto" class="border border-zinc-400 hover:bg-zinc-900 px-8 py-3 rounded-lg font-medium transition">
           Contacto
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Proyecto Principal -->
-  <section id="proyecto" class="py-20 bg-zinc-900">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-8 text-center">Peacemakers Mayhem</h2>
-      
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <img src="assets/images/portada.jpg" alt="Peacemakers Mayhem" class="rounded-xl shadow-2xl w-full">
-        </div>
-        <div>
-          <p class="text-zinc-300 text-lg leading-relaxed">
-            <!-- Aquí pon una descripción corta y potente de tu juego -->
-            Peacemakers Mayhem es un twin-stick shooter 2D con énfasis en sistemas de estados, combinatoria y claridad visual en medio del caos.
-          </p>
-          <a href="#" class="inline-block mt-6 text-emerald-400 hover:text-emerald-300">
-            Ver más → 
-          </a>
-        </div>
-      </div>
-
-      <!-- Secciones de sistemas -->
-      <div class="mt-16 grid md:grid-cols-2 gap-8">
-        <div class="bg-zinc-800 p-6 rounded-xl">
-          <h3 class="text-xl font-semibold mb-3">Diálogos No Intrusivos</h3>
-          <p class="text-zinc-400">Sistema que permite...</p>
-        </div>
-        <div class="bg-zinc-800 p-6 rounded-xl">
-          <h3 class="text-xl font-semibold mb-3">Sistema de Expresiones Faciales</h3>
-          <p class="text-zinc-400">Reacciones dinámicas según el estado del jugador.</p>
-        </div>
-        <!-- Añade más tarjetas según necesites -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Design Decisions -->
-  <section class="py-20">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-10 text-center">Decisiones de Diseño</h2>
-      <!-- Aquí puedes pegar las partes buenas que ya tienes, pero mejor formateadas -->
-      <div class="space-y-12">
-        <div>
-          <h3 class="text-2xl font-semibold text-emerald-400">Estados del Jugador y Ritmo de Combate</h3>
-          <p class="mt-4 text-zinc-300">Tu texto sobre ofensivo / defensivo / recarga...</p>
-        </div>
-        <!-- Repite estructura para cada problema-solución-resultado -->
-      </div>
-    </div>
-  </section>
-
-  <!-- About -->
+  <!-- Sobre mí -->
   <section class="py-20 bg-zinc-900">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <h2 class="text-4xl font-bold mb-8">Sobre mí</h2>
-      <p class="text-lg text-zinc-300">
-        Soy un diseñador de gameplay apasionado por crear sistemas profundos pero accesibles...
+      <p class="text-lg text-zinc-300 leading-relaxed">
+        Diseñador de sistemas e interacción con experiencia en la creación de mecánicas profundas, feedback claro y experiencias significativas. 
+        Me especializo en encontrar el balance entre complejidad y usabilidad, especialmente en entornos de alta densidad de información.
       </p>
     </div>
   </section>
 
-  <!-- Contact -->
+  <!-- Proyecto Principal -->
+  <section id="proyecto" class="py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-6 text-center">Peacemakers Mayhem</h2>
+      <p class="text-xl text-zinc-400 text-center max-w-3xl mx-auto mb-12">
+        Sistema de acción en tiempo real con gestión de escuadra, diseñado con enfoque en consecuencias permanentes, ritmo estratégico y claridad dentro del caos.
+      </p>
+
+      <!-- Video Placeholder -->
+      <div class="bg-black aspect-video rounded-2xl mb-12 flex items-center justify-center border border-zinc-800">
+        <p class="text-zinc-500 text-center">[ Reemplaza esta sección con el embed de YouTube del nuevo gameplay ]</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Punto más fuerte -->
+        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-3">Consecuencias Permanentes y Riesgo</h3>
+          <p class="text-zinc-400">Sistema de permadeath parcial con Character Swap avanzado, continues limitados y pérdida definitiva de personajes. Los finales del juego varían según los compañeros que sobrevivan.</p>
+        </div>
+
+        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-3">State Machines y Ritmo Estratégico</h3>
+          <p class="text-zinc-400">Estados excluyentes del jugador (Ataque → Recarga → Cobertura) que crean un flujo cíclico y obligan a tomar decisiones constantes.</p>
+        </div>
+
+        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-3">Feedback Audiovisual Multinivel</h3>
+          <p class="text-zinc-400">Auras visuales altamente distintivas + sistema de tres capas sonoras para comunicar el estado de las habilidades sin saturar la pantalla.</p>
+        </div>
+
+        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-3">Playtesting y Validación</h3>
+          <p class="text-zinc-400">Pruebas exhaustivas con público gamer y no gamer para validar decisiones de diseño, identificar el target real y fortalecer trade-offs.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Filosofía -->
+  <section class="py-20 bg-zinc-900">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center">Filosofía de Diseño</h2>
+      <div class="grid md:grid-cols-2 gap-10">
+        <div>
+          <h3 class="text-2xl font-semibold mb-4">Onboarding Orgánico</h3>
+          <p class="text-zinc-400">Diseño de niveles que enseña progresivamente, inspirado en juegos clásicos de los 90 y 2000.</p>
+        </div>
+        <div>
+          <h3 class="text-2xl font-semibold mb-4">Modularidad</h3>
+          <p class="text-zinc-400">Sistema diseñado para ser fácilmente escalable (nuevos personajes y habilidades).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
   <section id="contacto" class="py-20 text-center">
     <div class="max-w-2xl mx-auto px-6">
-      <h2 class="text-3xl font-bold mb-6">¿Hablamos?</h2>
-      <p class="text-zinc-400 mb-8">Estoy abierto a oportunidades en estudios de videojuegos.</p>
+      <h2 class="text-4xl font-bold mb-6">¿Hablamos?</h2>
+      <p class="text-zinc-400 mb-8">Abierto a oportunidades en Diseño de Sistemas, UX, Interaction Design y desarrollo de productos digitales.</p>
       <a href="mailto:tu@email.com" class="text-emerald-400 text-xl hover:underline">
         tu@email.com
       </a>
