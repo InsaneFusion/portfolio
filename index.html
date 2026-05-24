@@ -10,6 +10,7 @@
     body { font-family: 'Inter', system-ui, sans-serif; }
     .hero-bg { background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%); }
     .card-hover:hover { transform: translateY(-6px); transition: all 0.3s ease; }
+    .media-container { border-radius: 16px; overflow: hidden; background: #111; }
   </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -33,71 +34,77 @@
     </div>
   </section>
 
-  <!-- Sobre mí -->
-  <section class="py-20 bg-zinc-900">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <h2 class="text-4xl font-bold mb-8">Sobre mí</h2>
-      <p class="text-lg text-zinc-300 leading-relaxed">
-        Diseñador de sistemas e interacción con experiencia en la creación de mecánicas profundas, feedback claro y experiencias significativas. 
-        Me especializo en encontrar el balance entre complejidad y usabilidad, especialmente en entornos de alta densidad de información.
-      </p>
-    </div>
-  </section>
-
   <!-- Proyecto Principal -->
   <section id="proyecto" class="py-20">
-    <div class="max-w-5xl mx-auto px-6">
+    <div class="max-w-6xl mx-auto px-6">
       <h2 class="text-4xl font-bold mb-6 text-center">Peacemakers Mayhem</h2>
       <p class="text-xl text-zinc-400 text-center max-w-3xl mx-auto mb-12">
-        Sistema de acción en tiempo real con gestión de escuadra, diseñado con enfoque en consecuencias permanentes, ritmo estratégico y claridad dentro del caos.
+        Sistema de acción en tiempo real con gestión de escuadra, diseñado con enfoque en consecuencias permanentes y claridad en el caos.
       </p>
 
-      <!-- Video Placeholder -->
-      <div class="bg-black aspect-video rounded-2xl mb-12 flex items-center justify-center border border-zinc-800">
-        <p class="text-zinc-500 text-center">[ Reemplaza esta sección con el embed de YouTube del nuevo gameplay ]</p>
+      <!-- Video Principal -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-semibold mb-4 text-center">Gameplay Showcase</h3>
+        <div class="media-container aspect-video">
+          <!-- Reemplaza con tu primer video -->
+          <video controls class="w-full h-full">
+            <source src="media/video1.mov" type="video/mov">
+            Tu navegador no soporta video.
+          </video>
+        </div>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8">
 
-        <!-- Punto más fuerte -->
-        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-3">Consecuencias Permanentes y Riesgo</h3>
-          <p class="text-zinc-400">Sistema de permadeath parcial con Character Swap avanzado, continues limitados y pérdida definitiva de personajes. Los finales del juego varían según los compañeros que sobrevivan.</p>
+        <!-- Tarjeta 1 -->
+        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Consecuencias Permanentes</h3>
+          <div class="media-container mb-4">
+            <img src="media/gif1.gif" alt="Permadeath y Character Swap" class="w-full">
+          </div>
+          <p class="text-zinc-400">Sistema de permadeath parcial, Character Swap y finales según supervivencia de la escuadra.</p>
         </div>
 
-        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-3">State Machines y Ritmo Estratégico</h3>
-          <p class="text-zinc-400">Estados excluyentes del jugador (Ataque → Recarga → Cobertura) que crean un flujo cíclico y obligan a tomar decisiones constantes.</p>
+        <!-- Tarjeta 2 -->
+        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Estados del Jugador</h3>
+          <div class="media-container mb-4">
+            <img src="media/gif2.gif" alt="State Machine" class="w-full">
+          </div>
+          <p class="text-zinc-400">Flujo de combate basado en estados excluyentes: Ataque → Recarga → Cobertura.</p>
         </div>
 
-        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-3">Feedback Audiovisual Multinivel</h3>
-          <p class="text-zinc-400">Auras visuales altamente distintivas + sistema de tres capas sonoras para comunicar el estado de las habilidades sin saturar la pantalla.</p>
+        <!-- Tarjeta 3 -->
+        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Habilidades y Feedback</h3>
+          <div class="media-container mb-4">
+            <img src="media/gif3.gif" alt="Auras y habilidades" class="w-full">
+          </div>
+          <p class="text-zinc-400">Auras visuales y sistema de audio multinivel para comunicar habilidades.</p>
         </div>
 
-        <div class="bg-zinc-900 p-7 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-3">Playtesting y Validación</h3>
-          <p class="text-zinc-400">Pruebas exhaustivas con público gamer y no gamer para validar decisiones de diseño, identificar el target real y fortalecer trade-offs.</p>
+        <!-- Tarjeta 4 -->
+        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
+          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Combate y Caos Controlado</h3>
+          <div class="media-container mb-4">
+            <img src="media/gif4.gif" alt="Combate intenso" class="w-full">
+          </div>
+          <p class="text-zinc-400">Claridad visual en medio de alta densidad de acción.</p>
         </div>
 
       </div>
-    </div>
-  </section>
 
-  <!-- Filosofía -->
-  <section class="py-20 bg-zinc-900">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center">Filosofía de Diseño</h2>
-      <div class="grid md:grid-cols-2 gap-10">
-        <div>
-          <h3 class="text-2xl font-semibold mb-4">Onboarding Orgánico</h3>
-          <p class="text-zinc-400">Diseño de niveles que enseña progresivamente, inspirado en juegos clásicos de los 90 y 2000.</p>
-        </div>
-        <div>
-          <h3 class="text-2xl font-semibold mb-4">Modularidad</h3>
-          <p class="text-zinc-400">Sistema diseñado para ser fácilmente escalable (nuevos personajes y habilidades).</p>
+      <!-- Segundo Video (opcional) -->
+      <div class="mt-16">
+        <h3 class="text-2xl font-semibold mb-4 text-center">Sistema de Habilidades en Acción</h3>
+        <div class="media-container aspect-video">
+          <video controls class="w-full h-full">
+            <source src="media/video2.mp4" type="video/mp4">
+            Tu navegador no soporta video.
+          </video>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -105,7 +112,7 @@
   <section id="contacto" class="py-20 text-center">
     <div class="max-w-2xl mx-auto px-6">
       <h2 class="text-4xl font-bold mb-6">¿Hablamos?</h2>
-      <p class="text-zinc-400 mb-8">Abierto a oportunidades en Diseño de Sistemas, UX, Interaction Design y desarrollo de productos digitales.</p>
+      <p class="text-zinc-400 mb-8">Abierto a oportunidades en Diseño de Sistemas, UX y desarrollo de productos digitales.</p>
       <a href="mailto:tu@email.com" class="text-emerald-400 text-xl hover:underline">
         tu@email.com
       </a>
