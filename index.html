@@ -18,93 +18,42 @@
   <!-- Hero -->
   <section class="hero-bg py-28 text-center">
     <div class="max-w-4xl mx-auto px-6">
-      <h1 class="text-5xl md:text-6xl font-bold mb-4">InsaneFusion</h1>
-      <p class="text-2xl text-emerald-400 mb-6">Systems & Interaction Designer</p>
-      <p class="text-xl text-zinc-400 max-w-2xl mx-auto">
-        Diseño de sistemas complejos • Feedback intuitivo • Experiencias con consecuencias reales
-      </p>
-      <div class="mt-10 flex justify-center gap-4">
-        <a href="#proyecto" class="bg-emerald-600 hover:bg-emerald-500 px-8 py-3 rounded-lg font-medium transition">
-          Ver Proyecto Principal
-        </a>
-        <a href="#contacto" class="border border-zinc-400 hover:bg-zinc-900 px-8 py-3 rounded-lg font-medium transition">
-          Contacto
-        </a>
-      </div>
+      <h1 class="text-5xl md:text-6xl font-bold mb-4" id="hero-title">InsaneFusion</h1>
+      <p class="text-2xl text-emerald-400 mb-6" id="hero-subtitle">Systems & Interaction Designer</p>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto" id="hero-description"></p>
     </div>
   </section>
 
   <!-- Proyecto Principal -->
   <section id="proyecto" class="py-20">
     <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-6 text-center">Peacemakers Mayhem</h2>
-      <p class="text-xl text-zinc-400 text-center max-w-3xl mx-auto mb-12">
-        Sistema de acción en tiempo real con gestión de escuadra, diseñado con enfoque en consecuencias permanentes y claridad en el caos.
-      </p>
+      <h2 class="text-4xl font-bold mb-6 text-center" id="project-title"></h2>
+      <p class="text-xl text-zinc-400 text-center max-w-3xl mx-auto mb-12" id="project-description"></p>
 
       <!-- Video Principal -->
       <div class="mb-16">
         <h3 class="text-2xl font-semibold mb-4 text-center">Gameplay Showcase</h3>
         <div class="media-container aspect-video">
-          <!-- Reemplaza con tu primer video -->
           <video controls class="w-full h-full">
-            <source src="media/video1.mov" type="video/mov">
-            Tu navegador no soporta video.
+            <source src="media/video1.mp4" type="video/mp4">
           </video>
         </div>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-8">
-
-        <!-- Tarjeta 1 -->
-        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Consecuencias Permanentes</h3>
-          <div class="media-container mb-4">
-            <img src="media/gif1.gif" alt="Permadeath y Character Swap" class="w-full">
-          </div>
-          <p class="text-zinc-400">Sistema de permadeath parcial, Character Swap y finales según supervivencia de la escuadra.</p>
-        </div>
-
-        <!-- Tarjeta 2 -->
-        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Estados del Jugador</h3>
-          <div class="media-container mb-4">
-            <img src="media/gif2.gif" alt="State Machine" class="w-full">
-          </div>
-          <p class="text-zinc-400">Flujo de combate basado en estados excluyentes: Ataque → Recarga → Cobertura.</p>
-        </div>
-
-        <!-- Tarjeta 3 -->
-        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Habilidades y Feedback</h3>
-          <div class="media-container mb-4">
-            <img src="media/gif3.gif" alt="Auras y habilidades" class="w-full">
-          </div>
-          <p class="text-zinc-400">Auras visuales y sistema de audio multinivel para comunicar habilidades.</p>
-        </div>
-
-        <!-- Tarjeta 4 -->
-        <div class="bg-zinc-900 p-6 rounded-2xl card-hover">
-          <h3 class="text-xl font-semibold text-emerald-400 mb-4">Combate y Caos Controlado</h3>
-          <div class="media-container mb-4">
-            <img src="media/gif4.gif" alt="Combate intenso" class="w-full">
-          </div>
-          <p class="text-zinc-400">Claridad visual en medio de alta densidad de acción.</p>
-        </div>
-
+      <!-- Contenedor de tarjetas (se llenará con JS) -->
+      <div class="grid md:grid-cols-2 gap-8" id="cards-container">
+        <!-- Las tarjetas se generan automáticamente desde content.js -->
       </div>
 
-      <!-- Segundo Video (opcional) -->
+      <!-- Segundo Video -->
       <div class="mt-16">
-        <h3 class="text-2xl font-semibold mb-4 text-center">Sistema de Habilidades en Acción</h3>
+        <h3 class="text-2xl font-semibold mb-4 text-center">Sistema de Habilidades</h3>
         <div class="media-container aspect-video">
           <video controls class="w-full h-full">
             <source src="media/video2.mp4" type="video/mp4">
-            Tu navegador no soporta video.
           </video>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -119,5 +68,13 @@
     </div>
   </section>
 
+  <!-- Script para cargar el contenido -->
+  <script src="content.js"></script>
+  <script>
+    // Cargar contenido cuando la página esté lista
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPortfolioContent();
+    });
+  </script>
 </body>
 </html>
