@@ -2,7 +2,7 @@ const portfolioContent = {
   hero: {
     title: "Juan Merlo",
     subtitle: "Game Interaction and System Designer",
-    description: "Diseño de UX/UI y modelos de interaccion humana adecuado a sistemas complejos"
+    description: "Diseño de UX/UI y modelos de interacción humana adecuado a sistemas dinámicos"
   },
 
   project: {
@@ -24,12 +24,12 @@ const portfolioContent = {
 {
       title: "Gameplay narrativo",
       image: "media/gif3.gif",
-      description: "Sistema de permadeath, character Swap en tiempo real y finales según supervivencia de la escuadra."
+      description: "Sistema de muerte permanente, cambio de personajes en tiempo real y finales según supervivencia de la escuadra que fomentan la toma de desiciones rapida, la rejugabilidad y la exploracion de posibilidades."
     },
 {
       title: "Playtesting",
       image: "media/gif4.gif",
-      description: "HUD y elementos UX/UI diseñados y ubicados respondiendo a las necesidades del usuario, pulido a traves de la observacion y el testing, informandolo del modo mas idoneo para el sistema."
+      description: "Los elementos UX/UI fueron diseñados y ubicados respondiendo a las necesidades del jugador, pulidos a traves de la observacion y el testing en usuarios de diferentes ambitos, ya sea casual o gamer y con distintos niveles de afinidad con el genero."
     },
 {
       title: "Sistema adecuado a reaccion humana",
@@ -39,7 +39,7 @@ const portfolioContent = {
 {
       title: "Feedback multi-capa audiovisual",
       image: "media/gif6.gif",
-      description: "Redundancia deliberada en orden de suministrar informacion critica, via aura, interfaz inferior (UI), y señales sonoras de inicio, termino y disponibilidad."
+      description: "Redundancia deliberada en orden de suministrar informacion critica para la longevidad de la partida. Informacion como el estado de las skills es otorgada via aura, interfaz inferior (UI), y señales sonoras de inicio, termino y disponibilidad."
     },
 {
       title: "Estados excluyentes no discretos",
@@ -49,12 +49,12 @@ const portfolioContent = {
 {
       title: "Escalabilidad",
       image: "media/gif8.gif",
-      description: "La informacion que compone los elementos se encuentra alojada en el nucleo del sistema y no una instancia particular. Estos valores se pueden acceder para crear nuevas instancias sin necesidad de alterar estructuras existentes."
+      description: "La informacion que compone los elementos se encuentra alojada en indices dentro del nucleo del sistema y no una instancia particular. Estos valores se pueden acceder para crear nuevas instancias sin necesidad de alterar estructuras existentes."
     },
 {
       title: "Asistencia por NPCs",
       image: "media/gif9.gif",
-      description: "Concepto explorado superficialmente por el titulo 'Contra Force' para SNES del año 1992. El gameplay fue rapidamente pensado para un multijugador Cooperativo, y la IA fue diseñada para comportarse como un jugador de habilidad sub-optima"
+      description: "Concepto explorado superficialmente por el titulo 'Contra Force' para SNES del año 1992. El gameplay fue rapidamente pensado para un multijugador Cooperativo, y la IA fue diseñada para comportarse como un jugador de habilidad sub-optima."
     },
 {
       title: "Exploracion de conceptos y evaluacion de compatibilidad",
