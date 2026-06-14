@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width-width, initial-scale=1.0">
+  <title>Technical Specs | Peacemakers Mayhem</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .code-snippet {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      background-color: #f3f4f6;
+      border-left: 4px solid #10b981;
+    }
+    /* Estilo para que el texto de la descripción se vea bien */
+    .prose p { margin-bottom: 0.5rem; }
+    .prose p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+  <!-- Header Técnico -->
+  <header class="bg-white border-b border-gray-200 py-12">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span id="tech-badge" class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-wider rounded-full"></span>
+        <span class="text-gray-400 text-sm">Peacemakers Mayhem</span>
+      </div>
+      <h1 id="tech-title" class="text-4xl md:text-5xl font-bold text-gray-900 mb-4"></h1>
+      <p id="tech-subtitle" class="text-xl text-gray-600 max-w-3xl mb-6"></p>
+      
+      <div id="tech-stack" class="flex flex-wrap gap-3">
+        <!-- Los badges se generan con JS -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal: Capítulos Horizontales -->
+  <main class="max-w-5xl mx-auto px-6 py-12 space-y-16">
+    <div id="tech-sections-container">
+      <!-- Las secciones se generan automáticamente desde technical-content.js -->
+    </div>
+
+    <!-- Footer / Volver -->
+    <section class="text-center py-8 border-t border-gray-200">
+      <h3 class="text-xl font-bold text-gray-900 mb-4">Stack Tecnológico Utilizado</h3>
+      <div class="flex flex-wrap justify-center gap-4 text-gray-600 mb-8">
+        <!-- Repetimos el stack visualmente al final también -->
+        <span class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm">GameMaker Studio 2</span>
+        <span class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm">GML Custom 3D</span>
+        <span class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm">JSON Data Structures</span>
+        <span class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm">Vertex Buffers</span>
+        <span class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm">Spatial Partitioning</span>
+      </div>
+      <a href="index.html" class="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors shadow-sm">
+        <i class="fas fa-arrow-left mr-2"></i> Volver al Portafolio de Diseño
+      </a>
+    </section>
+  </main>
+
+  <footer class="bg-gray-100 py-8 text-center text-gray-500 text-sm border-t border-gray-200">
+    <p>&copy; 2026 Juan Merlo. Technical Documentation for Peacemakers Mayhem.</p>
+  </footer>
+
+  <!-- Script para cargar el contenido técnico -->
+  <script src="technical-content.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTechnicalContent();
+    });
+  </script>
+</body>
+</html>
