@@ -1,26 +1,25 @@
 const technicalContent = {
   hero: {
-    badge: "Technical Case Study",
+    badge: "Vista en detalle",
     title: "Peacemakers Mayhem: Desglose Técnico",
     subtitle: "Detalles de sistemas integrados en GameMaker Studio 2",
     techStack: [
       "GML (GameMaker Language)",
       ".OBJ 3D Models",
       "JSON Data Structures",
-      "Vertex Buffers",
-      "Instancing & Parsing",
+      "Buffers y Parsing",
       "Dynamic Difficulty Adjustment"
     ]
   },
-
   sections: [
     {
-      title: "Motor de Renderizado 3D Personalizado",
-      description: "Dado que GameMaker no ofrece soporte nativo para 3D, se desarrolló un pipeline de importación y renderizado desde cero. Se implementó un sistema de <strong>Instancing</strong> y <strong>Caching de Geometría</strong> para maximizar el rendimiento. El sistema parsea archivos .OBJ manualmente, almacena la geometría única en un <code>vertex_buffer</code> y la reutiliza aplicando matrices de transformación en tiempo real, evitando cargas redundantes.",
-      techTag: "GML Custom 3D, Vertex Buffers, OBJ Parsing",
+      title: "Pipeline de renderizado 3D",
+      description: "Gamemaker, como IDE, no ofrece soporte nativo para elementos 3D. Si bien existen funciones concretas para la manipulación de vértices y la construcción de caras, su nivel es superficial. Valiéndome de estos elementos, creé un sistema capaz de generar geometría primitiva y, sobre esa base, un parser para modelos 3D en formato .OBJ. Estos se almacenan en <code>vertex_buffer</code> gestionados por el motor. Posteriormente, estos buffers se integran en otras estructuras de datos para <em>caching</em>, asegurando que su llamada, almacenamiento y liberación estén alineados con el rendimiento óptimo.<br><br>Asimismo, ajustes críticos durante el renderizado, como el <em>depth sorting</em>, el <em>triplanar mapping</em> selectivo y las matrices de transformación TRS, fueron resueltos de manera manual.",
+      techTag: "Gamemaker Custom 3D, Vertex Buffers, .OBJ Parsing",
       type: "code",
       content: `
-		// Lógica conceptual del Parser de Modelos 3D
+		Lógica conceptual del Parser de Modelos 3D
+		
 		// 1. Lectura y Parseo del archivo .OBJ
 		var lines = load_obj_file("model.obj");
 		var vertices = ds_grid_create();
@@ -29,9 +28,9 @@ const technicalContent = {
 
 		// 2. Iteración y extracción de datos
 		for (line in lines) {
-		if (line starts with "v ") vertices.add(parse_vector(line));
-		if (line starts with "vn") normals.add(parse_vector(line));
-		if (line starts with "vt") uvs.add(parse_vector(line));
+			if (line starts with "v ") vertices.add(parse_vector(line));
+			if (line starts with "vn") normals.add(parse_vector(line));
+			if (line starts with "vt") uvs.add(parse_vector(line));
 		}
 
 		// 3. Construcción del Vertex Buffer (Renderizado)
@@ -40,11 +39,11 @@ const technicalContent = {
 
 		for (face in faces) {
 		// Triangulación y asignación de atributos
-		for (i = 0; i < 3; i++) {
-		vertex_position(vbuf, vertices[face.v[i]]);
-		vertex_normal(vbuf, normals[face.vn[i]]);
-		vertex_uv(vbuf, uvs[face.vt[i]]);
-		}
+			for (i = 0; i < 3; i++) {
+				vertex_position(vbuf, vertices[face.v[i]]);
+				vertex_normal(vbuf, normals[face.vn[i]]);
+				vertex_uv(vbuf, uvs[face.vt[i]]);
+			}
 		}
 		vertex_end(vbuf);
 		vertex_freeze(vbuf);
@@ -52,12 +51,13 @@ const technicalContent = {
 		return vbuf;`
     },
     {
-      title: "Pipeline de Assets y Seguridad",
-      description: "Para superar la falta de ofuscación nativa de GameMaker, se creó un pipeline de conversión que transforma archivos <code>.OBJ</code> en scripts de código ofuscado. Además, se implementó <strong>Lazy Loading</strong>: los modelos no se cargan al inicio, sino bajo demanda durante la ejecución, reduciendo drásticamente el uso de memoria inicial y los tiempos de carga.",
+      title: "Pipeline de Assets y ofuscación",
+      description: "Un problema adicional de Gamemaker es que no ofusca ningún elemento que no forme parte de los recursos esenciales que el IDE considera nativos. Dado que los modelos 3D y la geometría externa no entran en esta categoría, no se incluirían en el archivo ejecutable del proyecto.<br><br>Para mantener todo embebido sin sacrificar el rendimiento cargando cientos de modelos al instante, cada modelo se guardó como una función que devuelve los valores geométricos en el mismo orden que emplea el script de <em>parsing</em>. Al retornar el <code>vertex_buffer</code>, este se almacena en una <code>ds_list</code> (estructura similar a una tupla sin duplicados). Cada buffer recibe un índice en esta estructura, el cual se asigna a cada instancia en el mapa que utilice dicho modelo. Cuando el modelo es detectado al inicio de una <em>room</em>, se ejecuta la función correspondiente, asignando en memoria solo los activos requeridos. De este modo, se mantiene la ofuscación que ofrece el motor sin pasos adicionales.",
       techTag: "Ofuscación, Gestión de Memoria, Lazy Loading",
       type: "code",
       content: `
-		// Lógica de Lazy Loading y Caché de Modelos
+		Lógica de Lazy Loading y Caché de Modelos
+		
 		// 1. Detección de instancias de modelos en la sala
 		var model_instances = find_instances_in_room(obj_model);
 
@@ -70,8 +70,8 @@ const technicalContent = {
 		// 3. Carga bajo demanda: Solo si no existe en caché
 		if (!ds_map_exists(global.model_cache, model_id)) {
 		// Construye el buffer una sola vez
-		var buffer = scr_geo_builder(model_id); 
-		ds_map_add(global.model_cache, model_id, buffer);
+			var buffer = scr_geo_builder(model_id); 
+			ds_map_add(global.model_cache, model_id, buffer);
 		}
 		
 		// 4. Asignación del buffer compartido a la instancia
@@ -81,75 +81,186 @@ const technicalContent = {
 		// 5. Limpieza de recursos si es necesario
 		// ds_map_destroy(global.model_cache);`
     },
-    {
-      title: "Gestión de Estado Persistente & Riesgo",
-      description: "El sistema de salud no es local a cada personaje, sino una variable global compartida. Al cambiar de personaje, el **daño acumulado se preserva** mediante un cálculo de ratio de vida. <br><br> " +
-                   "El script calcula el porcentaje de vida restante del personaje activo (<code>current / max</code>) y lo aplica al nuevo personaje, ajustando sus HP actuales a su nuevo máximo. Esto fuerza una gestión de riesgo dinámica: cambiar a un personaje con menos HP máx implica recibir un daño proporcionalmente mayor en términos relativos. La muerte es permanente pero reversible con 'Continues', lo que altera el set de personajes disponibles.",
-      techTag: "State Persistence, Ratio-Based Health Transfer, Dynamic Character Switching",
-      type: "code",
-      content: `
-		// Lógica de Cambio de Personaje con Transferencia de Daño
-		// 1. Capturar estado actual
-		var current_hp = obj_player.lv_hp;
-		var current_max = obj_player.lv_hp_max;
-		var hp_ratio = current_hp / current_max; // Ej: 50/100 = 0.5
+    
+	{
+  title: "Sistema de Renderizado Procedural Modular",
+  description: "Para lograr un sistema de animación fluido sin depender de pre-renderizado de frames, desarrollé un motor de ensamblaje de sprites basado en <em>articulación jerárquica</em> (Forward Kinematics). El personaje se construye frame a frame como un <em>puppet</em>, donde cada parte (piernas, torso, brazos, cabeza) se calcula en tiempo real utilizando vectores de posición y rotación.<br><br>El sistema implementa:<br>1. <strong>Interpolación Angular Suave:</strong> Algoritmos de <em>lerp</em> para suavizar transiciones entre frames de animación, evitando el <em>jitter</em> visual.<br>2. <strong>Culling Dinámico:</strong> Las partes del cuerpo se ocultan o muestran según el estado (ej. carga de arma, daño, agacharse), optimizando el render.<br>3. <strong>Gestión de Efectos Visuales:</strong> Lógica específica para superposiciones como caras de daño o accesorios únicos por personaje.<br><br>Esta arquitectura permite una variabilidad infinita de poses y una respuesta instantánea al input del jugador, manteniendo un rendimiento óptimo al evitar la carga de grandes spritesheets.<br><br>El script combina la lógica de cálculo de posiciones con el renderizado condicional, demostrando un control total sobre la geometría visual del personaje.",
+  techTag: "Forward Kinematics, Procedural Animation, Vector Math, Dynamic Culling, Sprite Assembly",
+  type: "code",
+  content: `
+		<!-- ==========================================
+		SISTEMA DE COMPOSICIÓN DE SPRITES POR PIEZAS
+		Motor de Renderizado Procedural Modular
+		========================================== -->
 
-		// 2. Instanciar nuevo personaje (ej: el siguiente en la lista)
-		var new_char_type = cm_plylist[next_index];
-		var new_instance = instance_create_depth(x, y, depth, new_char_type);
+		<div class="mb-4">
 
-		// 3. Transferir daño: Aplicar el ratio al nuevo máximo
-		// Si el nuevo tiene 200 HP máx, recibirá 200 * 0.5 = 100 HP
-		new_instance.lv_hp = new_instance.lv_hp_max * hp_ratio;
+		1. MOTOR DE CÁLCULO (Forward Kinematics)
+		
+		// Calcula posiciones y ángulos de cada articulación en tiempo real
+		function scr_draw_character(_dir, _angle) {
+			
+			// --- Configuración Inicial ---
+			var _xs = _dir; // Multiplcador de dirección (1 o -1)
+			var _base_y = y - obj_game.pos_y_leg[perso_index];
+			
+			// --- 1. PIERNAS (Interpolación de Frames / Lerp) ---
+			var _l1_anim = obj_game.ang_leg1_anim1;
+			var _l2_anim = obj_game.ang_leg2_anim2;
+			var _torso_y = obj_game.tor_legs_y[anim_state];
+			
+			// Suavizado angular para evitar jitter visual en transiciones
+			if (anim_state == 1 && lv_frames % 1 < 1) {
+				lv_leg1_a += ((_l1_anim[ceil(lv_frames)] - lv_leg1_a) * 0.25);
+				lv_leg2_a += ((_l2_anim[ceil(lv_frames)] - lv_leg2_a) * 0.25);
+			} else {
+				lv_leg1_a = _l1_anim[floor(lv_frames)] * _xs;
+				lv_leg2_a = _l2_anim[floor(lv_frames)] * _xs;
+			}
+			
+			// Cálculo de posición absoluta de piernas
+			var _l1_x = x + (obj_game.pos_x_l1[perso_index] * _xs);
+			var _l2_x = x - (obj_game.pos_x_l2[perso_index] * _xs);
 
-		// 4. Limpieza y actualización de referencias
-		instance_destroy(old_instance);
-		update_player_reference(new_instance);
-		update_emitters(new_instance); // Actualizar efectos visuales
+			// --- 2. TORSO (Rotación Relativa Suavizada) ---
+			var _t_ang = _angle / 3; // Factor de suavizado para el torso
+			if (_xs == -1) _t_ang = -_t_ang;
+			_t_ang += lv_disp_off; // Corrección postural por retroceso/empuje
+			
+			// --- 3. BRAZOS Y ARMAS (Cálculo Vectorial) ---
+			var _a1_offset = obj_game.pos_d_a1[perso_index];
+			// Posición del brazo usando trigonometría
+			var _a1_x = _t_x + lengthdir_x(_a1_offset, 90 + (obj_game.pos_a_a1 * _xs) + _t_ang);
+			
+			// Lógica específica por personaje (ej: Personaje 4 tiene retroceso diferente)
+			var _a1_ang = 0;
+			if (perso_index == 4) {
+				_a1_ang = clamp(_angle, 0, 230) - (lv_ret * 2);
+			} else {
+				_a1_ang = clamp(_angle, 0, 230) - (lv_disp_off * 5);
+			}
+			
+			// --- 4. CABEZA Y ACCESORIOS ---
+			var _h_ang = clamp(_angle, 0, 210);
+			var _extra_pos = (_perso_index == 1) 
+				? _h_x + lengthdir_x(30, 132 * _xs + _h_ang) 
+				: 0; // Posición condicional para accesorios únicos
+		}
 
-		// El daño se mantiene, el riesgo cambia según el nuevo max_hp`
-    },
+		____________________________________________________________
+		
+		2. MOTOR DE RENDERIZADO (Sprite Assembly)
+		
+		// Dibuja las partes calculadas aplicando Culling Dinámico
+		
+		function render_character_parts() {
+			
+			// --- Piernas: Culling por estado (Agachado) ---
+			if (!lv_duck) {
+				draw_sprite_ext(_l1, lv_frames, _l1_x, _l_y+_torso_y, _xs, 1, lv_leg1_a, c_white, 1);
+				draw_sprite_ext(_l2, lv_frames, _l2_x, _l_y+_torso_y, _xs, 1, lv_leg2_a, c_white, 1);
+			}
+
+			// --- Torso: Culling por estado (Recarga) ---
+			if (lv_mag_delay == 0) {
+				draw_sprite_ext(_t, lv_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
+			} else {
+				draw_sprite_ext(_tr, lv_reload_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
+			}
+
+			// --- Cabeza: Culling por estado (Daño) ---
+			if (lv_hurtang > 0) {
+				draw_sprite_ext(_hface, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
+			} else {
+				draw_sprite_ext(_h, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
+			}
+
+			// --- Brazos y Arma: Lógica condicional compleja ---
+			if (lv_mag_delay == 0) {
+				// Brazo 1 (Varía si hay retroceso activo en personaje 4)
+				if (perso_index == 4 && lv_ret > 0) {
+					draw_sprite_ext(spr_sil_arm3, lv_frames, _a1_x, _a1_y+_torso_y, 1, 1, _a1_ang, c_white, 1);
+				} else {
+					draw_sprite_ext(_a1, lv_frames, _a1_x, _a1_y+_torso_y, 1, 1, _a1_ang, c_white, 1);
+				}
+				
+				// Arma y Mano (Siempre visibles si no hay recarga)
+				draw_sprite_ext(_w, lv_frames, _w_x, _w_y+_torso_y, 1, 1, _w_ang, c_white, 1);
+				draw_sprite_ext(_g, lv_frames, _g_x, _g_y+_torso_y, 1, 1, _g_ang, c_white, 1);
+			}
+
+			// --- Accesorios Específicos (Personaje 1) ---
+			if (perso_index == 1) {
+				draw_sprite_ext(spr_irma_extra, lv_irma_ex_frames, _e_x, _e_y, 1, 1, lv_irma_ex_ang, c_white, 1);
+			}
+		}
+		</div> `
+		},
     {
       title: "Sistema de Spawn Basado en Slots",
-      description: "Para evitar colisiones costosas y solapamientos de enemigos en tiempo real, se implementó un sistema de <strong>Particionamiento Espacial Lógico</strong>. El espacio alrededor del jugador se divide en 'slots' (izquierda/derecha). Los enemigos solo se generan si un slot está libre. Esto garantiza una coreografía limpia y una dificultad controlable sin cálculos de física complejos. El sistema incluye un algoritmo de búsqueda de espacio físico que ajusta dinámicamente la posición de spawn si hay obstáculos.",
+      description: "Los bots (NPCs que operan en oposición al jugador) poseen un sistema de generación basado en <em>slots</em>, diseñado para evitar el solapamiento de instancias sin sobrecargar el motor de físicas (Box2D), previniendo así colisiones indeseadas y artefactos visuales (<em>clipping</em>).<br><br>Cada bot posee un índice que determina su tipo y, asociado a este, una distancia mínima al jugador. Al generarse fuera de cámara, los bots se aproximan al jugador hasta la distancia designada mediante un algoritmo de búsqueda de <em>slot</em>. De este modo, encuentran su posición evitando automáticamente el solapamiento. Los <em>slots</em> se diferencian entre izquierda y derecha, estableciendo un límite máximo para cada lado y garantizando que los valores de distancia no se repitan.<br><br>Esta solución no solo mejora la jugabilidad, sino que resuelve problemas de balance, legibilidad de la pantalla y planificación del flujo de juego (<em>Game Flow</em>) mediante parametrización dinámica.",
       techTag: "Spatial Partitioning, Collision Search, Dynamic Spawning",
       type: "code",
       content: `
-		// Lógica de Spawn con Rangos y Búsqueda de Espacio
-		// 1. Asignación de Slot (Rango) según tipo de enemigo
-		var slot_index = get_enemy_slot_index(enemy_type);
-		if (global.rangoset[slot_index, side] != noone) {
-		// Fallback: Buscar slot disponible si el ideal está ocupado
-		slot_index = find_fallback_slot(slot_index, side);
-		if (slot_index == -1) return false; // No hay espacio lógico
+		1. Controlador de Spawn (obj_enemy_spawn): Decisión de generación
+		
+		// Verifica límites de cantidad y decide el lado de aparición
+		if (order != -1) {
+			var _enemyType = staff[order];
+			var _side = choose(0, 1); // 0: Izquierda, 1: Derecha
+		
+		// Control de límites globales (ej: máximo de enemigos en pantalla)
+			var _currentCount = instance_number(obj_bot);
+			if (_currentCount < global.max_enemies) {
+				if (scr_genbirmen(_enemyType, _side)) {
+					// Llama al script de resolución de posición
+					// Spawn exitoso
+				}
+			}
+		order = -1; // Resetear orden
+		}
+		__________________________________________________________________
+
+		2. Resolver de Posición (obj_game mediante scr_genbirmen): Lógica de colocación
+		
+		// Busca un slot libre y valida espacio físico sin colisiones
+		function scr_genbirmen(_type, _side) {
+		// A. Asignación de Slot Lógico (Rango)
+		var _slotIndex = get_slot_index(_type);
+		if (global.rangoset[_slotIndex, _side] != noone) {
+			_slotIndex = find_fallback_slot(_slotIndex, _side); // Buscar alternativa si está ocupado
+			if (_slotIndex == -1) return false; // No hay espacio lógico
 		}
 
-		// 2. Búsqueda de espacio físico libre (Collision Search)
-		var spawn_y = initial_y;
-		var offset = 16;
-		var multipliers = [1, -1, 2, -2, ...]; // Estrategia de búsqueda en zigzag
+		// B. Búsqueda de Espacio Físico (Algoritmo de Zig-Zag)
+		var _spawnY = initial_y;
+		var _offset = 16;
+		var _multiplier = 1;
+		var _solved = false;
 
-		for (var m of multipliers) {
-		if (collision_check(x, spawn_y + offset * m, no_collision)) {
-		spawn_y += offset * m;
-		break; // Espacio encontrado
+		// Busca arriba/abajo evitando colisiones con obstáculos
+		while (!_solved && abs(_multiplier) < 50) {
+			var _testY = _spawnY + (_offset * _multiplier);
+			if (no_collision_at(_spawnX, _testY)) {
+				_spawnY = _testY;
+				_solved = true;
+			} else {
+				_multiplier = (_multiplier < 0) ? abs(_multiplier) + 1 : -_multiplier; // Cambia dirección
+			}
 		}
-		}
-		if (!collision_check(x, spawn_y, no_collision)) return false; // No hay espacio físico
+		if (!_solved) return false; // No hay espacio físico válido
 
-		// 3. Instanciación y Configuración
-		var enemy = instance_create_depth(x, spawn_y, depth, enemy_type);
-		enemy.hp_max = scale_stat(enemy.hp_max, difficulty);
-		enemy.damage = scale_stat(enemy.damage, difficulty);
-		enemy.assigned_slot = slot_index;
-
-		// Registrar ocupación del slot
-		global.rangoset[slot_index, side] = enemy.id;
-		return true;`
+		// C. Instanciación y Registro
+		var _enemy = instance_create_depth(_spawnX, _spawnY, depth, _type);
+		_enemy.assigned_slot = _slotIndex;
+		global.rangoset[_slotIndex, _side] = _enemy.id; // Marcar slot como ocupado
+		
+		return true;
+		}`
     },
     {
       title: "IA y Comportamiento Adaptativo",
-      description: "Los NPCs aliados no usan un NavMesh complejo, sino un sistema de seguimiento basado en distancias relativas que se ajustan dinámicamente mediante triggers del entorno. Por ejemplo, en un ascensor, la distancia máxima se reduce un 30% para 'amontonar' al grupo, y en secciones de platforming, los NPCs imitan el orden de salto del jugador. Esto crea una sensación de coordinación sin sobrecargar el motor con cálculos de pathfinding.",
+      description: "Los NPCs acompañantes (diferentes a los bots) recorren el escenario junto al jugador, navegándolo con la misma facilidad que este. Inicialmente pensé en utilizar <em>navmesh</em> mediante la herramienta <code>mp_grid</code>, pero finalmente opté por una solución mecánicamente más simple.<br><br>Dado que el plataformeo es trivial y no letal (el peligro debe provenir exclusivamente del combate), no había necesidad de cálculos complejos. Además, la ausencia de <em>hurtbox</em> en los NPCs hacía innecesaria la creación de mecánicas de evasión. Por lo tanto, el escenario posee <em>triggers</em> que modifican la distancia máxima del NPC al jugador en función de su posición en la jerarquía de control y el entorno.<br><br>Los NPCs replican órdenes de salto si el entorno lo requiere y las omiten cuando no es necesario. Navegan por sí mismos los obstáculos e incluso simulan comportamiento de cobertura, incluso cuando el elemento es puramente estético, para favorecer la inmersión.",
       techTag: "FSM, Triggers de Comportamiento",
       type: "image",
       image: "media/technical_ai_flow.png",
@@ -157,9 +268,7 @@ const technicalContent = {
     },
     {
       title: "Director Dinámico de Dificultad (gp_tension)",
-      description: "Implementación de un sistema de balanceo en tiempo real inspirado en el 'Director AI' de Left 4 Dead. Un valor global <code>gp_tension</code> (0.0 - 1.0) monitorea el rendimiento del jugador y ajusta dinámicamente la dificultad. <br><br> " +
-                 "Cada zona del nivel posee un <strong>detector de tensión</strong> con un array de 4 tipos de enemigos (de menor a mayor peligrosidad). Según el valor de <code>gp_tension</code>, el sistema limita el pool de spawn: si el jugador rinde bien, el índice de selección sube, introduciendo enemigos más peligrosos. Si el jugador sufre, el índice baja, aliviando la presión. <br><br> " +
-                 "Este sistema se combina con un diseño asimétrico donde cada enemigo está diseñado para contrarrestar un personaje específico, obligando al jugador a gestionar su escuadrón tácticamente en función de las amenazas actuales.",
+      description: "Implementación de un sistema de balanceo en tiempo real inspirado en el 'Director AI' de <em>Left 4 Dead</em>. Un valor global <code>gp_tension</code> (0.0 - 1.0) monitorea el rendimiento del jugador y ajusta dinámicamente la dificultad.<br><br>Cada zona del nivel posee un detector de tensión con un array de 4 tipos de enemigos (de menor a mayor peligrosidad). Según el valor de <code>gp_tension</code>, el sistema limita el <em>spawn pool</em>: si el jugador rinde bien, el índice de selección sube, introduciendo enemigos más peligrosos. Si el jugador encuentra dificultades, el índice baja, aliviando la presión.<br><br>Este sistema se combina con un diseño asimétrico donde cada enemigo está diseñado para contrarrestar un personaje específico, obligando al jugador a gestionar su escuadrón tácticamente en función de las amenazas actuales.",
       techTag: "Dynamic Difficulty Adjustment (DDA), AI Director, Asymmetric Balance",
       type: "code",
       content: `
@@ -174,11 +283,7 @@ const technicalContent = {
 		// Si tension es 0.2, el rango es [0, 0] (solo sale A)
 		var max_index = floor(tension * 3); 
 		var selected_enemy = enemy_pool[random(0, max_index)];
-
-		// Verificación de contras (Rock-Paper-Scissors)
-		if (selected_enemy.weakness == active_character.type) {
-			apply_bonus_damage(selected_enemy);
-		}`
+		`
     }
   ]
 };
