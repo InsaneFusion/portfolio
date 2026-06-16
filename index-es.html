@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsaneFusion | Systems & Interaction Designer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .hero-bg { background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%); }
+    .card-hover:hover { transform: translateY(-6px); transition: all 0.3s ease; }
+    .media-container { border-radius: 16px; overflow: hidden; background: #111; }
+    
+    /* Animación personalizada para el Splash Screen */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200 overflow-x-hidden">
+
+  <!-- SPLASH SCREEN (NUEVO: Pantalla de bienvenida) -->
+  <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950/95 backdrop-blur-sm transition-opacity duration-700 ease-in-out">
+    <div class="text-center px-6 max-w-2xl animate-fade-in-up">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Juan Merlo</h2>
+      <p class="text-xl text-zinc-400 mb-10">Diseño de Sistemas e Interacción para Experiencias Dinámicas</p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <!-- Botón Principal: Ver Portafolio (Diseño/Gameplay) -->
+        <button id="btn-showcase" class="group relative px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded-lg transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40">
+          <span class="relative z-10">Ver Caso de Estudio</span>
+          <span class="absolute inset-0 rounded-lg bg-white opacity-0 group-hover:opacity-20 transition-opacity"></span>
+        </button>
+
+        <!-- Botón Secundario: Detalles Técnicos (IT/Recursos) -->
+        <a href="technical-es.html" class="group px-8 py-3 border border-zinc-700 hover:border-emerald-400 hover:text-emerald-400 text-zinc-300 font-medium rounded-lg transition-all duration-300">
+          Detalles Técnicos & Stack
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section (Original) -->
+  <section class="hero-bg py-28 text-center" id="main-content">
+    <div class="max-w-4xl mx-auto px-6">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4" id="hero-title">InsaneFusion</h1>
+      <p class="text-2xl text-emerald-400 mb-6" id="hero-subtitle">Systems & Interaction Designer</p>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto" id="hero-description"></p>
+    </div>
+  </section>
+
+  <!-- Proyecto Principal -->
+  <section id="proyecto" class="py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-6 text-center" id="project-title"></h2>
+      <p class="text-xl text-zinc-400 text-center max-w-3xl mx-auto mb-12" id="project-description"></p>
+
+      <!-- Video Principal -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-semibold mb-4 text-center">Gameplay Showcase</h3>
+        <div class="media-container aspect-video">
+          <video controls class="w-full h-full">
+            <source src="media/video1.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <!-- Contenedor de tarjetas (se llenará con JS) -->
+      <div class="grid md:grid-cols-2 gap-8" id="cards-container">
+        <!-- Las tarjetas se generan automáticamente desde content.js -->
+      </div>
+
+      <!-- Segundo Video -->
+      <div class="mt-16">
+        <h3 class="text-2xl font-semibold mb-4 text-center">Sistema de Habilidades</h3>
+        <div class="media-container aspect-video">
+          <video controls class="w-full h-full">
+            <source src="media/video2.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="py-20 text-center">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-6">¿Hablamos?</h2>
+      <p class="text-zinc-400 mb-8">Abierto a oportunidades en Diseño de Sistemas, UX y desarrollo de productos digitales.</p>
+      <a href="mailto:tu@email.com" class="text-emerald-400 text-xl hover:underline">
+        tu@email.com
+      </a>
+    </div>
+  </section>
+
+  <!-- Script para cargar el contenido -->
+  <script src="content-es.js"></script>
+  <script>
+    // Cargar contenido y manejar el Splash Screen
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPortfolioContent();
+      
+      const splash = document.getElementById('splash-screen');
+      const btnShowcase = document.getElementById('btn-showcase');
+      const mainContent = document.getElementById('main-content');
+
+      // Acción al hacer clic en "Ver Caso de Estudio"
+      if (btnShowcase) {
+        btnShowcase.addEventListener('click', () => {
+          // Animación de desvanecimiento
+          splash.classList.add('opacity-0', 'pointer-events-none');
+          
+          // Eliminar del DOM después de la animación (700ms coincide con duration-700)
+          setTimeout(() => {
+            if (splash) splash.style.display = 'none';
+          }, 700);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width-width, initial-scale=1.0">
+  <title>Peacemakers Mayhem </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .code-snippet {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      background-color: #f3f4f6;
+      border-left: 4px solid #10b981;
+    }
+    /* Estilo para que el texto de la descripción se vea bien */
+    .prose p { margin-bottom: 0.5rem; }
+    .prose p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+  <header class="bg-white border-b border-gray-200 py-12">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span id="tech-badge" class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-wider rounded-full"></span>
+        <span class="text-gray-400 text-sm">Code and scripting</span>
+      </div>
+      <h1 id="tech-title" class="text-4xl md:text-5xl font-bold text-gray-900 mb-4"></h1>
+      <p id="tech-subtitle" class="text-xl text-gray-600 max-w-3xl mb-6"></p>
+      
+      <div id="tech-stack" class="flex flex-wrap gap-3">
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-6 space-y-6">
+    <div id="tech-sections-container">
+    </div>
+	
+	<section id="contacto" class="py-2 text-center">
+		<div class="max-w-2xl mx-auto px-2">
+		  <h2 class="text-4xl font-bold mb-4">Contact</h2>
+		  <p class="text-zinc-400 mb-6">I'm currently open to game design, 2D animation or broader development roles. If you'd like to discuss how I can contribute to your team, feel free to reach out.</p>
+		  <a href="mailto:juanmerlo1196@gmail.com" class="text-emerald-400 text-xl hover:underline">
+			Send email
+		  </a>
+		</div>
+	  </section>
+	
+    <section class="text-center py-8 border-t border-gray-200">
+      <a href="index.html" class="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors shadow-sm">
+        <i class="fas fa-arrow-left mr-2"></i> Return to main menu
+      </a>
+    </section>
+  </main>
+
+  <footer class="bg-gray-100 py-8 text-center text-gray-500 text-sm border-t border-gray-200">
+    <p>&copy; 2026 Juan Merlo. Technical Documentation for Peacemakers Mayhem.</p>
+  </footer>
+
+  <script src="technical-content-en.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTechnicalContent();
+    });
+  </script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 const portfolioContent = {
   hero: {
     title: "Juan Merlo",
-    subtitle: "Game Interaction and System Designer",
-    description: "Diseño de UX/UI y modelos de interacción humana adecuado a sistemas dinámicos"
+    subtitle: "Desarollador de Videojuegos Indie",
+    description: "Desarrollo en solitario. Diseño, programacion, arte y sonido"
   },
 
   project: {

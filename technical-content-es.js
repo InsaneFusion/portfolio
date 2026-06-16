@@ -65,17 +65,17 @@ const technicalContent = {
 		if (!global.model_cache) global.model_cache = ds_map_create();
 
 		for (var inst in model_instances) {
-		var model_id = inst.mod_id;
+			var model_id = inst.mod_id;
+				
+			// 3. Carga bajo demanda: Solo si no existe en caché
+			if (!ds_map_exists(global.model_cache, model_id)) {
+			// Construye el buffer una sola vez
+				var buffer = scr_geo_builder(model_id); 
+				ds_map_add(global.model_cache, model_id, buffer);
+			}
 			
-		// 3. Carga bajo demanda: Solo si no existe en caché
-		if (!ds_map_exists(global.model_cache, model_id)) {
-		// Construye el buffer una sola vez
-			var buffer = scr_geo_builder(model_id); 
-			ds_map_add(global.model_cache, model_id, buffer);
-		}
-		
-		// 4. Asignación del buffer compartido a la instancia
-		inst.mod_vbuffer = ds_map_find_value(global.model_cache, model_id);
+			// 4. Asignación del buffer compartido a la instancia
+			inst.mod_vbuffer = ds_map_find_value(global.model_cache, model_id);
 		}
 
 		// 5. Limpieza de recursos si es necesario
@@ -88,12 +88,6 @@ const technicalContent = {
   techTag: "Forward Kinematics, Procedural Animation, Vector Math, Dynamic Culling, Sprite Assembly",
   type: "code",
   content: `
-		<!-- ==========================================
-		SISTEMA DE COMPOSICIÓN DE SPRITES POR PIEZAS
-		Motor de Renderizado Procedural Modular
-		========================================== -->
-
-		<div class="mb-4">
 
 		1. MOTOR DE CÁLCULO (Forward Kinematics)
 		
@@ -146,7 +140,6 @@ const technicalContent = {
 				? _h_x + lengthdir_x(30, 132 * _xs + _h_ang) 
 				: 0; // Posición condicional para accesorios únicos
 		}
-
 		____________________________________________________________
 		
 		2. MOTOR DE RENDERIZADO (Sprite Assembly)
@@ -193,9 +186,8 @@ const technicalContent = {
 			if (perso_index == 1) {
 				draw_sprite_ext(spr_irma_extra, lv_irma_ex_frames, _e_x, _e_y, 1, 1, lv_irma_ex_ang, c_white, 1);
 			}
-		}
-		</div> `
-		},
+		}`
+	},
     {
       title: "Sistema de Spawn Basado en Slots",
       description: "Los bots (NPCs que operan en oposición al jugador) poseen un sistema de generación basado en <em>slots</em>, diseñado para evitar el solapamiento de instancias sin sobrecargar el motor de físicas (Box2D), previniendo así colisiones indeseadas y artefactos visuales (<em>clipping</em>).<br><br>Cada bot posee un índice que determina su tipo y, asociado a este, una distancia mínima al jugador. Al generarse fuera de cámara, los bots se aproximan al jugador hasta la distancia designada mediante un algoritmo de búsqueda de <em>slot</em>. De este modo, encuentran su posición evitando automáticamente el solapamiento. Los <em>slots</em> se diferencian entre izquierda y derecha, estableciendo un límite máximo para cada lado y garantizando que los valores de distancia no se repitan.<br><br>Esta solución no solo mejora la jugabilidad, sino que resuelve problemas de balance, legibilidad de la pantalla y planificación del flujo de juego (<em>Game Flow</em>) mediante parametrización dinámica.",
@@ -209,7 +201,7 @@ const technicalContent = {
 			var _enemyType = staff[order];
 			var _side = choose(0, 1); // 0: Izquierda, 1: Derecha
 		
-		// Control de límites globales (ej: máximo de enemigos en pantalla)
+			// Control de límites globales (ej: máximo de enemigos en pantalla)
 			var _currentCount = instance_number(obj_bot);
 			if (_currentCount < global.max_enemies) {
 				if (scr_genbirmen(_enemyType, _side)) {
@@ -217,7 +209,7 @@ const technicalContent = {
 					// Spawn exitoso
 				}
 			}
-		order = -1; // Resetear orden
+			order = -1; // Resetear orden
 		}
 		__________________________________________________________________
 
@@ -225,37 +217,37 @@ const technicalContent = {
 		
 		// Busca un slot libre y valida espacio físico sin colisiones
 		function scr_genbirmen(_type, _side) {
-		// A. Asignación de Slot Lógico (Rango)
-		var _slotIndex = get_slot_index(_type);
-		if (global.rangoset[_slotIndex, _side] != noone) {
-			_slotIndex = find_fallback_slot(_slotIndex, _side); // Buscar alternativa si está ocupado
-			if (_slotIndex == -1) return false; // No hay espacio lógico
-		}
-
-		// B. Búsqueda de Espacio Físico (Algoritmo de Zig-Zag)
-		var _spawnY = initial_y;
-		var _offset = 16;
-		var _multiplier = 1;
-		var _solved = false;
-
-		// Busca arriba/abajo evitando colisiones con obstáculos
-		while (!_solved && abs(_multiplier) < 50) {
-			var _testY = _spawnY + (_offset * _multiplier);
-			if (no_collision_at(_spawnX, _testY)) {
-				_spawnY = _testY;
-				_solved = true;
-			} else {
-				_multiplier = (_multiplier < 0) ? abs(_multiplier) + 1 : -_multiplier; // Cambia dirección
+			// A. Asignación de Slot Lógico (Rango)
+			var _slotIndex = get_slot_index(_type);
+			if (global.rangoset[_slotIndex, _side] != noone) {
+				_slotIndex = find_fallback_slot(_slotIndex, _side); // Buscar alternativa si está ocupado
+				if (_slotIndex == -1) return false; // No hay espacio lógico
 			}
-		}
-		if (!_solved) return false; // No hay espacio físico válido
 
-		// C. Instanciación y Registro
-		var _enemy = instance_create_depth(_spawnX, _spawnY, depth, _type);
-		_enemy.assigned_slot = _slotIndex;
-		global.rangoset[_slotIndex, _side] = _enemy.id; // Marcar slot como ocupado
-		
-		return true;
+			// B. Búsqueda de Espacio Físico (Algoritmo de Zig-Zag)
+			var _spawnY = initial_y;
+			var _offset = 16;
+			var _multiplier = 1;
+			var _solved = false;
+
+			// Busca arriba/abajo evitando colisiones con obstáculos
+			while (!_solved && abs(_multiplier) < 50) {
+				var _testY = _spawnY + (_offset * _multiplier);
+				if (no_collision_at(_spawnX, _testY)) {
+					_spawnY = _testY;
+					_solved = true;
+				} else {
+					_multiplier = (_multiplier < 0) ? abs(_multiplier) + 1 : -_multiplier; // Cambia dirección
+				}
+			}
+			if (!_solved) return false; // No hay espacio físico válido
+
+			// C. Instanciación y Registro
+			var _enemy = instance_create_depth(_spawnX, _spawnY, depth, _type);
+			_enemy.assigned_slot = _slotIndex;
+			global.rangoset[_slotIndex, _side] = _enemy.id; // Marcar slot como ocupado
+			
+			return true;
 		}`
     },
     {
@@ -267,24 +259,76 @@ const technicalContent = {
       alt: "Flujo de Comportamiento de IA"
     },
     {
-      title: "Director Dinámico de Dificultad (gp_tension)",
-      description: "Implementación de un sistema de balanceo en tiempo real inspirado en el 'Director AI' de <em>Left 4 Dead</em>. Un valor global <code>gp_tension</code> (0.0 - 1.0) monitorea el rendimiento del jugador y ajusta dinámicamente la dificultad.<br><br>Cada zona del nivel posee un detector de tensión con un array de 4 tipos de enemigos (de menor a mayor peligrosidad). Según el valor de <code>gp_tension</code>, el sistema limita el <em>spawn pool</em>: si el jugador rinde bien, el índice de selección sube, introduciendo enemigos más peligrosos. Si el jugador encuentra dificultades, el índice baja, aliviando la presión.<br><br>Este sistema se combina con un diseño asimétrico donde cada enemigo está diseñado para contrarrestar un personaje específico, obligando al jugador a gestionar su escuadrón tácticamente en función de las amenazas actuales.",
-      techTag: "Dynamic Difficulty Adjustment (DDA), AI Director, Asymmetric Balance",
-      type: "code",
-      content: `
-		// Lógica del Director de Dificultad (gp_tension)
-		var tension = calculate_tension(player_performance); // 0.0 a 1.0
+	  title: "Motor de Diálogo Dinámico con JSON Anidado",
+	  description: "Peacemakers Mayhem está diseñado priorizando la rejugabilidad. Esto requiere que los elementos narrativos y los diálogos se evoquen bajo condiciones específicas de disponibilidad. Para gestionar esto, implementé una estructura basada en archivos JSON jerárquicos. Esta organización no solo permite almacenar y ubicar cada elemento narrativo de forma ordenada, sino que facilita la localización y el soporte multilingüe.<br>La segmentación del archivo JSON permite contener todos los idiomas en un único fichero, optimizando la carga: el sistema extrae y procesa únicamente el bloque de datos del idioma activo, evitando sobrecargar la memoria con información innecesaria."
+	  techTag: "GameMaker, JSON, Dialogue System, State Machine, i18n",
+	  type: "code",
+	  content: `
+		1.a Carga global del JSON con fallback automático
+		global.text = scr_get_lang(os_get_language());
 
-		// Array de enemigos: [Leve, Medio, Difícil, Élite]
-		var enemy_pool = [TYPE_A, TYPE_B, TYPE_C, TYPE_D];
+		_____________________________________________________________________________________
 
-		// Lógica de selección basada en tensión
-		// Si tension es 0.8, el rango es [0, 2] (puede salir C)
-		// Si tension es 0.2, el rango es [0, 0] (solo sale A)
-		var max_index = floor(tension * 3); 
-		var selected_enemy = enemy_pool[random(0, max_index)];
-		`
-    }
+		1.b Detalle del script importador
+		
+		function scr_get_lang(_idioma = "es") {
+			if (!file_exists("gametext.json")) {
+				show_debug_message("Error: No se encontró gametext.json");
+				return undefined;
+			}
+			
+			// Lectura eficiente mediante Buffer API
+			var buffer = buffer_load("gametext.json");
+			var json_string = buffer_read(buffer, buffer_string);
+			buffer_delete(buffer); // Liberar memoria inmediatamente
+			
+			var _alldata = json_parse(json_string);
+			
+			// Fallback automático a 'es' si el idioma no existe
+			if (variable_struct_exists(_alldata, _idioma)) {
+				return _alldata[$ _idioma];
+			}
+			return _alldata[$ "es"];
+		}
+
+		_____________________________________________________________________________________
+
+		2. Ejemplo aplicado en renderizado de subtitulos
+		
+		#region // SUBTITULOS
+
+		// Verificación de tiempo de visualización del subtítulo actual
+		if (gp_subt_time > 1) {
+			gp_subt_time--;
+		} 
+		else {
+			// Tiempo finalizado: preparar siguiente línea
+			if (gp_subt_time == 1) {
+				if (map_diag_seq > 1) {
+					
+					// Avanzar índice de diálogo y decrementar secuencia
+					map_diag_index++;
+					map_diag_seq--;
+					
+					// Extraer el texto del JSON anidado para calcular el tiempo de lectura
+					var _texto_actual = gp_subt_conpac[gp_subt_conpac_index] [$ "content"] [$ "dialogo"];
+					var _strl = string_length(_texto_actual);
+					
+					// Calcular tiempo dinámico: 3ms por carácter, con límites (min 70, max 270)
+					gp_subt_time = clamp(_strl * 3, 70, 270);
+					
+					// Resetear contadores de caracteres para efecto de escritura
+					gp_subt_chars = 0;
+				} 
+				else {
+					// Fin del diálogo
+					gp_subt_time = 0;
+				}
+			}
+		}
+
+	#endregion`
+	}
   ]
 };
 
