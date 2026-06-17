@@ -1,14 +1,14 @@
 const technicalContent = {
   hero: {
-    badge: "Vista en detalle",
+    badge: "Fortfolio Técnico",
     title: "Peacemakers Mayhem: Desglose Técnico",
-    subtitle: "Detalles de sistemas integrados en GameMaker Studio 2",
+    subtitle: "Detalles de sistemas integrados en GML para el proyecto",
     techStack: [
       "GML (GameMaker Language)",
-      ".OBJ 3D Models",
-      "JSON Data Structures",
+      "Animación Jerarquizada (Cinemática Directa Híbrida)",
+      "Estructura de datos JSON",
       "Buffers y Parsing",
-      "Dynamic Difficulty Adjustment"
+      "Gestión de memoria"
     ]
   },
   sections: [
@@ -18,50 +18,48 @@ const technicalContent = {
       techTag: "Gamemaker Custom 3D, Vertex Buffers, .OBJ Parsing",
       type: "code",
       content: `
-		Lógica conceptual del Parser de Modelos 3D
-		
-		// 1. Lectura y Parseo del archivo .OBJ
-		var lines = load_obj_file("model.obj");
-		var vertices = ds_grid_create();
-		var normals = ds_grid_create();
-		var uvs = ds_grid_create();
+		function scr_geo_builder(default_model)
+	  
+			// 1. Lectura y Parsing del modelo .OBJ
+			var lines = model_id(); // Esta función devuelve un string. 
+			var vertex = ds_grid_create();
+			var normals = ds_grid_create();
+			var uvs = ds_grid_create();
 
-		// 2. Iteración y extracción de datos
-		for (line in lines) {
-			if (line starts with "v ") vertices.add(parse_vector(line));
-			if (line starts with "vn") normals.add(parse_vector(line));
-			if (line starts with "vt") uvs.add(parse_vector(line));
-		}
-
-		// 3. Construcción del Vertex Buffer (Renderizado)
-		var vbuf = vertex_create_buffer();
-		vertex_begin(vbuf, format);
-
-		for (face in faces) {
-		// Triangulación y asignación de atributos
-			for (i = 0; i < 3; i++) {
-				vertex_position(vbuf, vertices[face.v[i]]);
-				vertex_normal(vbuf, normals[face.vn[i]]);
-				vertex_uv(vbuf, uvs[face.vt[i]]);
+			// 2. Iteracion y asignacion de datos
+			for (line in lines) {
+				if (line starts with "v ") vertex.add(parse_vector(line));
+				if (line starts with "vn") normals.add(parse_vector(line));
+				if (line starts with "vt") uvs.add(parse_vector(line));
 			}
-		}
-		vertex_end(vbuf);
-		vertex_freeze(vbuf);
 
-		return vbuf;`
+			// 3. Creación del vertex_buffer.
+			var vbuf = vertex_create_buffer();
+			vertex_begin(vbuf, format);
+
+			for (face in faces) {
+				for (i = 0; i < 3; i++) {
+					vertex_position(vbuf, vertex[face.v[i]]);
+					vertex_normal(vbuf, normals[face.vn[i]]);
+					vertex_uv(vbuf, uvs[face.vt[i]]);
+				}
+			}
+			vertex_end(vbuf);
+			vertex_freeze(vbuf);
+
+			return vbuf;
+		}`
     },
     {
-      title: "Pipeline de Assets y ofuscación",
+      title: "Pipeline de Assets con Carga Diferida y Ofuscación",
       description: "Un problema adicional de Gamemaker es que no ofusca ningún elemento que no forme parte de los recursos esenciales que el IDE considera nativos. Dado que los modelos 3D y la geometría externa no entran en esta categoría, no se incluirían en el archivo ejecutable del proyecto.<br><br>Para mantener todo embebido sin sacrificar el rendimiento cargando cientos de modelos al instante, cada modelo se guardó como una función que devuelve los valores geométricos en el mismo orden que emplea el script de <em>parsing</em>. Al retornar el <code>vertex_buffer</code>, este se almacena en una <code>ds_list</code> (estructura similar a una tupla sin duplicados). Cada buffer recibe un índice en esta estructura, el cual se asigna a cada instancia en el mapa que utilice dicho modelo. Cuando el modelo es detectado al inicio de una <em>room</em>, se ejecuta la función correspondiente, asignando en memoria solo los activos requeridos. De este modo, se mantiene la ofuscación que ofrece el motor sin pasos adicionales.",
-      techTag: "Ofuscación, Gestión de Memoria, Lazy Loading",
+      techTag: "Ofuscación, Gestión de Memoria, Carga Diferida",
       type: "code",
       content: `
-		Lógica de Lazy Loading y Caché de Modelos
-		
 		// 1. Detección de instancias de modelos en la sala
 		var model_instances = find_instances_in_room(obj_model);
 
-		// 2. Mapa global de caché: { id_modelo: vertex_buffer }
+		// 2. Mapa global de caché
 		if (!global.model_cache) global.model_cache = ds_map_create();
 
 		for (var inst in model_instances) {
@@ -69,7 +67,6 @@ const technicalContent = {
 				
 			// 3. Carga bajo demanda: Solo si no existe en caché
 			if (!ds_map_exists(global.model_cache, model_id)) {
-			// Construye el buffer una sola vez
 				var buffer = scr_geo_builder(model_id); 
 				ds_map_add(global.model_cache, model_id, buffer);
 			}
@@ -78,27 +75,26 @@ const technicalContent = {
 			inst.mod_vbuffer = ds_map_find_value(global.model_cache, model_id);
 		}
 
-		// 5. Limpieza de recursos si es necesario
+		// 5. Limpieza de recursos
 		// ds_map_destroy(global.model_cache);`
     },
-    
 	{
-  title: "Sistema de Renderizado Procedural Modular",
-  description: "Para lograr un sistema de animación fluido sin depender de pre-renderizado de frames, desarrollé un motor de ensamblaje de sprites basado en <em>articulación jerárquica</em> (Forward Kinematics). El personaje se construye frame a frame como un <em>puppet</em>, donde cada parte (piernas, torso, brazos, cabeza) se calcula en tiempo real utilizando vectores de posición y rotación.<br><br>El sistema implementa:<br>1. <strong>Interpolación Angular Suave:</strong> Algoritmos de <em>lerp</em> para suavizar transiciones entre frames de animación, evitando el <em>jitter</em> visual.<br>2. <strong>Culling Dinámico:</strong> Las partes del cuerpo se ocultan o muestran según el estado (ej. carga de arma, daño, agacharse), optimizando el render.<br>3. <strong>Gestión de Efectos Visuales:</strong> Lógica específica para superposiciones como caras de daño o accesorios únicos por personaje.<br><br>Esta arquitectura permite una variabilidad infinita de poses y una respuesta instantánea al input del jugador, manteniendo un rendimiento óptimo al evitar la carga de grandes spritesheets.<br><br>El script combina la lógica de cálculo de posiciones con el renderizado condicional, demostrando un control total sobre la geometría visual del personaje.",
-  techTag: "Forward Kinematics, Procedural Animation, Vector Math, Dynamic Culling, Sprite Assembly",
-  type: "code",
-  content: `
+	  title: "Sistema de Renderizado Procedural Modular",
+	  description: "Para lograr un sistema de animación fluido sin depender de pre-renderizado de frames, desarrollé un motor de ensamblaje de sprites basado en <em>articulación jerárquica</em> (Forward Kinematics). El personaje se construye frame a frame como un <em>puppet</em>, donde cada parte (piernas, torso, brazos, cabeza) se calcula en tiempo real utilizando vectores de posición y rotación.<br><br>El sistema implementa:<br>1. <strong>Interpolación Angular Suave:</strong> Algoritmos de <em>lerp</em> para suavizar transiciones entre frames de animación, evitando el <em>jitter</em> visual.<br>2. <strong>Culling Dinámico:</strong> Las partes del cuerpo se ocultan o muestran según el estado (ej. carga de arma, daño, agacharse), optimizando el render.<br>3. <strong>Gestión de Efectos Visuales:</strong> Lógica específica para superposiciones como caras de daño o accesorios únicos por personaje.<br><br>Esta arquitectura permite una variabilidad infinita de poses y una respuesta instantánea al input del jugador, manteniendo un rendimiento óptimo al evitar la carga de grandes spritesheets.<br><br>El script combina la lógica de cálculo de posiciones con el renderizado condicional, demostrando un control total sobre la geometría visual del personaje.",
+	  techTag: "Forward Kinematics, Procedural Animation, Vector Math, Dynamic Culling, Sprite Assembly",
+	  type: "code",
+	  content: `
 
-		1. MOTOR DE CÁLCULO (Forward Kinematics)
+		1. Cálculos (Cinematica Directa híbrida)
 		
 		// Calcula posiciones y ángulos de cada articulación en tiempo real
 		function scr_draw_character(_dir, _angle) {
 			
-			// --- Configuración Inicial ---
+			// Configuración Inicial
 			var _xs = _dir; // Multiplcador de dirección (1 o -1)
 			var _base_y = y - obj_game.pos_y_leg[perso_index];
 			
-			// --- 1. PIERNAS (Interpolación de Frames / Lerp) ---
+			// a. PIERNAS (Interpolación de Frames / Lerp)
 			var _l1_anim = obj_game.ang_leg1_anim1;
 			var _l2_anim = obj_game.ang_leg2_anim2;
 			var _torso_y = obj_game.tor_legs_y[anim_state];
@@ -116,12 +112,12 @@ const technicalContent = {
 			var _l1_x = x + (obj_game.pos_x_l1[perso_index] * _xs);
 			var _l2_x = x - (obj_game.pos_x_l2[perso_index] * _xs);
 
-			// --- 2. TORSO (Rotación Relativa Suavizada) ---
+			// b. TORSO
 			var _t_ang = _angle / 3; // Factor de suavizado para el torso
 			if (_xs == -1) _t_ang = -_t_ang;
 			_t_ang += lv_disp_off; // Corrección postural por retroceso/empuje
 			
-			// --- 3. BRAZOS Y ARMAS (Cálculo Vectorial) ---
+			// c. BRAZOS Y ARMAS
 			var _a1_offset = obj_game.pos_d_a1[perso_index];
 			// Posición del brazo usando trigonometría
 			var _a1_x = _t_x + lengthdir_x(_a1_offset, 90 + (obj_game.pos_a_a1 * _xs) + _t_ang);
@@ -134,7 +130,7 @@ const technicalContent = {
 				_a1_ang = clamp(_angle, 0, 230) - (lv_disp_off * 5);
 			}
 			
-			// --- 4. CABEZA Y ACCESORIOS ---
+			// d. CABEZA Y ACCESORIOS 
 			var _h_ang = clamp(_angle, 0, 210);
 			var _extra_pos = (_perso_index == 1) 
 				? _h_x + lengthdir_x(30, 132 * _xs + _h_ang) 
@@ -142,33 +138,33 @@ const technicalContent = {
 		}
 		____________________________________________________________
 		
-		2. MOTOR DE RENDERIZADO (Sprite Assembly)
+		2. Renderizado (Sprite Assembly)
 		
 		// Dibuja las partes calculadas aplicando Culling Dinámico
 		
 		function render_character_parts() {
 			
-			// --- Piernas: Culling por estado (Agachado) ---
+			// a. PIERNAS: Culling por estado (Agachado)
 			if (!lv_duck) {
 				draw_sprite_ext(_l1, lv_frames, _l1_x, _l_y+_torso_y, _xs, 1, lv_leg1_a, c_white, 1);
 				draw_sprite_ext(_l2, lv_frames, _l2_x, _l_y+_torso_y, _xs, 1, lv_leg2_a, c_white, 1);
 			}
 
-			// --- Torso: Culling por estado (Recarga) ---
+			// b. TORSO: Culling por estado (Recarga)
 			if (lv_mag_delay == 0) {
 				draw_sprite_ext(_t, lv_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
 			} else {
 				draw_sprite_ext(_tr, lv_reload_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
 			}
 
-			// --- Cabeza: Culling por estado (Daño) ---
+			// c. CABEZA: Culling por estado (Daño)
 			if (lv_hurtang > 0) {
 				draw_sprite_ext(_hface, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
 			} else {
 				draw_sprite_ext(_h, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
 			}
 
-			// --- Brazos y Arma: Lógica condicional compleja ---
+			// d. BRAZOS Y ARMA
 			if (lv_mag_delay == 0) {
 				// Brazo 1 (Varía si hay retroceso activo en personaje 4)
 				if (perso_index == 4 && lv_ret > 0) {
@@ -182,7 +178,7 @@ const technicalContent = {
 				draw_sprite_ext(_g, lv_frames, _g_x, _g_y+_torso_y, 1, 1, _g_ang, c_white, 1);
 			}
 
-			// --- Accesorios Específicos (Personaje 1) ---
+			// e. EXTRAS (Personaje 1)
 			if (perso_index == 1) {
 				draw_sprite_ext(spr_irma_extra, lv_irma_ex_frames, _e_x, _e_y, 1, 1, lv_irma_ex_ang, c_white, 1);
 			}
@@ -264,12 +260,13 @@ const technicalContent = {
 	  techTag: "GameMaker, JSON, Dialogue System, State Machine, i18n",
 	  type: "code",
 	  content: `
-		1.a Carga global del JSON con fallback automático
+		// 1.a Carga global del JSON con fallback automático
+		
 		global.text = scr_get_lang(os_get_language());
 
 		_____________________________________________________________________________________
 
-		1.b Detalle del script importador
+		// 1.b Detalle del script importador
 		
 		function scr_get_lang(_idioma = "es") {
 			if (!file_exists("gametext.json")) {

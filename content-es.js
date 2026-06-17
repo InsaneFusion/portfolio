@@ -2,7 +2,7 @@ const portfolioContent = {
   hero: {
     title: "Juan Merlo",
     subtitle: "Desarollador de Videojuegos Indie",
-    description: "Desarrollo en solitario. Diseño, programacion, arte y sonido"
+    description: "Diseño, programacion, arte y sonido"
   },
 
   project: {

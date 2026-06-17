@@ -1,7 +1,7 @@
 const portfolioContent = {
   hero: {
     title: "Juan Merlo",
-    subtitle: "Indie videogame developer",
+    subtitle: "Indie Videogame Developer",
     description: "Game design, programming, art, and sound."
   },
 

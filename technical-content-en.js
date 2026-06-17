@@ -17,18 +17,18 @@ const technicalContent = {
       description: "GameMaker, as an IDE, lacks native support for 3D elements. While it offers specific functions for vertex manipulation and face construction, their capabilities are superficial. Leveraging these elements, I created a system capable of generating primitive geometry and, based on that, a parser for 3D models in .OBJ format. These are stored in <code>vertex_buffer</code>s managed by the engine. Subsequently, these buffers are integrated into other data structures for <em>caching</em>, ensuring their loading, storage, and release align with optimal performance.<br><br>Furthermore, critical rendering adjustments, such as <em>depth sorting</em>, selective <em>triplanar mapping</em>, and TRS transformation matrices, were implemented manually.",
       techTag: "GameMaker Custom 3D, Vertex Buffers, .OBJ Parsing",
       type: "code",
-      content:`
+      content: `
 		function scr_geo_builder(default_model)
 	  
 			// 1. Reading and Parsing the .OBJ file
 			var lines = model_id(); // returns a string. 
-			var vertices = ds_grid_create();
+			var vertex = ds_grid_create();
 			var normals = ds_grid_create();
 			var uvs = ds_grid_create();
 
 			// 2. Iteration and data extraction
 			for (line in lines) {
-				if (line starts with "v ") vertices.add(parse_vector(line));
+				if (line starts with "v ") vertex.add(parse_vector(line));
 				if (line starts with "vn") normals.add(parse_vector(line));
 				if (line starts with "vt") uvs.add(parse_vector(line));
 			}
@@ -38,9 +38,8 @@ const technicalContent = {
 			vertex_begin(vbuf, format);
 
 			for (face in faces) {
-				// Triangulation and attribute assignment
 				for (i = 0; i < 3; i++) {
-					vertex_position(vbuf, vertices[face.v[i]]);
+					vertex_position(vbuf, vertex[face.v[i]]);
 					vertex_normal(vbuf, normals[face.vn[i]]);
 					vertex_uv(vbuf, uvs[face.vt[i]]);
 				}
@@ -68,7 +67,6 @@ const technicalContent = {
 				
 			// 3. On-demand loading only if not already in cache
 			if (!ds_map_exists(global.model_cache, model_id)) {
-				// Build the buffer only once
 				var buffer = scr_geo_builder(model_id); 
 				ds_map_add(global.model_cache, model_id, buffer);
 			}
@@ -91,11 +89,11 @@ const technicalContent = {
 		// Calculates positions and angles of each joint in real-time
 		function scr_draw_character(_dir, _angle) {
 			
-			// --- Initial Setup ---
+			// Initial Setup 
 			var _xs = _dir; // Direction multiplier (1 or -1)
 			var _base_y = y - obj_game.pos_y_leg[perso_index];
 			
-			// --- 1. LEGS (Frame Interpolation / Lerp) ---
+			// a. LEGS (Frame Interpolation / Lerp)
 			var _l1_anim = obj_game.ang_leg1_anim1;
 			var _l2_anim = obj_game.ang_leg2_anim2;
 			var _torso_y = obj_game.tor_legs_y[anim_state];
@@ -113,12 +111,12 @@ const technicalContent = {
 			var _l1_x = x + (obj_game.pos_x_l1[perso_index] * _xs);
 			var _l2_x = x - (obj_game.pos_x_l2[perso_index] * _xs);
 
-			// --- 2. TORSO (Smooth Relative Rotation) ---
+			// b. TORSO
 			var _t_ang = _angle / 3; // Smoothing factor for torso
 			if (_xs == -1) _t_ang = -_t_ang;
 			_t_ang += lv_disp_off; // Posture correction for recoil/pushback
 			
-			// --- 3. ARMS and WEAPONS (Vector Calculation) ---
+			// c. ARMS and WEAPONS
 			var _a1_offset = obj_game.pos_d_a1[perso_index];
 			// Arm position using trigonometry
 			var _a1_x = _t_x + lengthdir_x(_a1_offset, 90 + (obj_game.pos_a_a1 * _xs) + _t_ang);
@@ -131,7 +129,7 @@ const technicalContent = {
 				_a1_ang = clamp(_angle, 0, 230) - (lv_disp_off * 5);
 			}
 			
-			// --- 4. HEAD and ACCESSORIES ---
+			// d. HEAD and ACCESSORIES
 			var _h_ang = clamp(_angle, 0, 210);
 			var _extra_pos = (_perso_index == 1) 
 				? _h_x + lengthdir_x(30, 132 * _xs + _h_ang) 
@@ -145,27 +143,27 @@ const technicalContent = {
 
 		function render_character_parts() {
 			
-			// --- Legs: Culling by state (Crouching) ---
+			// a. LEGS: Culling by state (Crouching)
 			if (!lv_duck) {
 				draw_sprite_ext(_l1, lv_frames, _l1_x, _l_y+_torso_y, _xs, 1, lv_leg1_a, c_white, 1);
 				draw_sprite_ext(_l2, lv_frames, _l2_x, _l_y+_torso_y, _xs, 1, lv_leg2_a, c_white, 1);
 			}
 
-			// --- Torso: Culling by state (Reloading) ---
+			// b. TORSO: Culling by state (Reloading)
 			if (lv_mag_delay == 0) {
 				draw_sprite_ext(_t, lv_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
 			} else {
 				draw_sprite_ext(_tr, lv_reload_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
 			}
 
-			// --- Head: Culling by state (Damage) ---
+			// c. HEAD: Culling by state (Damage)
 			if (lv_hurtang > 0) {
 				draw_sprite_ext(_hface, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
 			} else {
 				draw_sprite_ext(_h, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
 			}
 
-			// --- Arms and Weapon: Complex conditional logic ---
+			// d. ARMS AND WEAPONS: Complex conditional logic
 			if (lv_mag_delay == 0) {
 				// Arm 1 (Varies if recoil is active for Character 4)
 				if (perso_index == 4 andand lv_ret > 0) {
@@ -179,7 +177,7 @@ const technicalContent = {
 				draw_sprite_ext(_g, lv_frames, _g_x, _g_y+_torso_y, 1, 1, _g_ang, c_white, 1);
 			}
 
-			// --- Specific Accessories (Character 1) ---
+			// e. EXTRAS (character 1)
 			if (perso_index == 1) {
 				draw_sprite_ext(spr_irma_extra, lv_irma_ex_frames, _e_x, _e_y, 1, 1, lv_irma_ex_ang, c_white, 1);
 			}
