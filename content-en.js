@@ -13,53 +13,53 @@ const portfolioContent = {
   cards: [
     {
       title: "Twin-stick Controls",
-      image: "media/gif1.gif",
+      image: "media/movimiento.gif",
       description: "Introduces an additional layer of complexity to the Run n' Gun element, favoring player saturation when required, allowing encounter intensity to be finely tuned."
     },
     {
       title: "Multi-level Designed Flow",
-      image: "media/gif2.gif",
+      image: "media/caido.gif",
       description: "Micro, Macro, and Meta Loop management elements that ensure player retention. These elements have cross-influences that alter gameplay behavior in real-time."
     },
     {
       title: "Narrative Gameplay",
-      image: "media/gif3.gif",
+      image: "media/morgue.gif",
       description: "A permanent death system, real-time character switching, and endings based on squad survival that encourage quick decision-making, replayability, and the exploration of possibilities."
     },
     {
       title: "Playtesting",
-      image: "media/gif4.gif",
-      description: "UX/UI elements were designed and positioned in response to player needs, refined through observation and testing with users from various backgrounds, ranging from casual to hardcore, and with different levels of genre affinity."
+      image: "media/punteria.gif",
+      description: "UX/UI design evolved through user testing with various backgrounds, leading to strategic deviations from genre norms. These modifications were essential to accommodate a run 'n gun that integrates squad management and cooldown mechanics within a frenetic, high-paced environment. This approach ensures the interface meets the challenges of the game, where traditional conventions, such as classic HUD position, would fail to support the game's intensity."
     },
     {
       title: "Systems Aligned with Human Reaction",
-      image: "media/gif5.gif",
+      image: "media/miniboss.gif",
       description: "Skills designed to adapt to any skill level. For an advanced player, a powerful tool. For a novice, a panic button. In both cases, it fulfills its function."
     },
     {
       title: "Multi-layered Audiovisual Feedback",
-      image: "media/gif6.gif",
+      image: "media/auras.gif",
       description: "Deliberate redundancy to provide critical information for match longevity. Skill status is communicated via aura, bottom UI, and audio cues for start, end, and availability."
     },
     {
       title: "Non-Discrete Exclusive States",
-      image: "media/gif7.gif",
+      image: "media/anim.gif",
       description: "A condition system allowing for the organic overlapping of states. Each condition is evaluated independently, permitting their overlap. Conversely, during the design phase, exceptions or extra conditions must be reasoned out for each one to achieve premeditated results."
     },
     {
       title: "Scalability",
-      image: "media/gif8.gif",
+      image: "media/variedad.gif",
       description: "Information composing the elements is hosted in indices within the system core, not a particular instance. These values can be accessed to create new instances without altering existing structures."
     },
     {
       title: "NPC Assistance",
-      image: "media/gif9.gif",
+      image: "media/horda.gif",
       description: "A concept superficially explored by the 1992 SNES title 'Contra Force'. The gameplay was quickly envisioned for cooperative multiplayer, and the AI was designed to behave like a sub-optimal human player."
     },
     {
       title: "Concept Exploration and Compatibility Evaluation",
-      image: "media/gif10.gif",
-      description: "Systems like enabling or disabling tracking were implemented but ultimately discarded as they contradicted the game's fundamental dynamics. The same applies to mechanics such as vision cones, stealth, corpses, and cover, which were also discarded, among others."
+      image: "media/viejo.gif",
+      description: "UI elements and systems like enabling or disabling tracking were implemented but ultimately discarded as they contradicted the game's fundamental dynamics. The same applies to mechanics such as vision cones, stealth, corpses, and cover, which were also discarded, among others."
     },
   ]
 };
