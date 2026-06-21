@@ -18,48 +18,8 @@ const technicalContent = {
       techTag: "GameMaker Custom 3D, Vertex Buffers, .OBJ Parsing",
       type: "code",
       content: `
-		function scr_geo_builder(_file){
-	
-			#region // Turns model into string
-			
-			var _content = -1
-			
-			try {
-				 _content = _file()
-			}
-			catch (e) {
-				show_debug_message("FAILED INSTANCE=" + string(id));
-				show_debug_message("INSTANCE OBJ=" + string(object_index));
-				show_debug_message("ERROR=" + e.message);
-			}
-
-			_content = string_replace_all(_content, "\\r\\n", "\\n");
-			_content = string_replace_all(_content, "\\r", "");
-
-			var _lines = string_split(_content, "\\n");
-			
-			#endregion 
-			
-			#region // Creates info grids
-			
-				var _vert = ds_grid_create(3,1)
-				var _vert_i = 0
-				var _vertuv = ds_grid_create(2,1)
-				var _vertuv_i = 0
-				var _vertn = ds_grid_create(3,1)
-				var _vertn_i = 0
-				var _flist = ds_grid_create(9,1)
-				var _flist_i = 0
-			
-			#endregion
-			
-			#region // Creates buffer
-				
-				var _vbuffer = vertex_create_buffer()
-				vertex_begin(_vbuffer, obj_game.v_format)
-			
-			#endregion
-				
+		Region of scr_geo_builder()
+		
 			#region // Sorting
 			
 				for (var _it = 0; _it < array_length(_lines); _it++){
@@ -67,56 +27,37 @@ const technicalContent = {
 					var _c_line = _lines[_it]
 					var _vals = -1
 				
-					switch string_char_at(_c_line,1) {
-					
-						#region // Vertex Info
-						
+					switch string_char_at(_c_line,1) {					
 						case "v": 
-						
 							switch string_char_at(_c_line,2) {
-						
-								#region	// Vertex Texture
-									case "t":
-										_c_line = string_delete(_c_line,1,3)
-										_vals = string_split_ext(_c_line,[" "],true,2)
-										ds_grid_add(_vertuv,0,_vertuv_i,real(_vals[0]))
-										ds_grid_add(_vertuv,1,_vertuv_i,real(_vals[1]))
-										ds_grid_resize(_vertuv,ds_grid_width(_vertuv),ds_grid_height(_vertuv)+1)
-										_vertuv_i++
-									break
-								#endregion	
-						
-								#region // Vertex Normals
-									case "n":
-										_c_line = string_delete(_c_line,1,3)
-										_vals = string_split_ext(_c_line,[" "],true,3)
-										ds_grid_add(_vertn,0,_vertn_i,real(_vals[0]))
-										ds_grid_add(_vertn,1,_vertn_i,real(_vals[1]))
-										ds_grid_add(_vertn,2,_vertn_i,real(_vals[2]))
-										ds_grid_resize(_vertn,ds_grid_width(_vertn),ds_grid_height(_vertn)+1)
-										_vertn_i++
-									break
-								#endregion
-						
-								#region // Vertex
-									case " ":
-										_c_line = string_delete(_c_line,1,2)
-										_vals = string_split_ext(_c_line,[" "],true,3)
-										ds_grid_add(_vert,0,_vert_i,real(_vals[0]))
-										ds_grid_add(_vert,1,_vert_i,real(_vals[2]))								
-										ds_grid_add(_vert,2,_vert_i,real(_vals[1]))
-										ds_grid_resize(_vert,ds_grid_width(_vert),ds_grid_height(_vert)+1)
-										_vert_i++
-									break
-								#endregion
-							}
-						
+								case "t":
+									_c_line = string_delete(_c_line,1,3)
+									_vals = string_split_ext(_c_line,[" "],true,2)
+									ds_grid_add(_vertuv,0,_vertuv_i,real(_vals[0]))
+									ds_grid_add(_vertuv,1,_vertuv_i,real(_vals[1]))
+									ds_grid_resize(_vertuv,ds_grid_width(_vertuv),ds_grid_height(_vertuv)+1)
+									_vertuv_i++
+								break
+								case "n":
+									_c_line = string_delete(_c_line,1,3)
+									_vals = string_split_ext(_c_line,[" "],true,3)
+									ds_grid_add(_vertn,0,_vertn_i,real(_vals[0]))
+									ds_grid_add(_vertn,1,_vertn_i,real(_vals[1]))
+									ds_grid_add(_vertn,2,_vertn_i,real(_vals[2]))
+									ds_grid_resize(_vertn,ds_grid_width(_vertn),ds_grid_height(_vertn)+1)
+									_vertn_i++
+								break
+								case " ":
+									_c_line = string_delete(_c_line,1,2)
+									_vals = string_split_ext(_c_line,[" "],true,3)
+									ds_grid_add(_vert,0,_vert_i,real(_vals[0]))
+									ds_grid_add(_vert,1,_vert_i,real(_vals[2]))								
+									ds_grid_add(_vert,2,_vert_i,real(_vals[1]))
+									ds_grid_resize(_vert,ds_grid_width(_vert),ds_grid_height(_vert)+1)
+									_vert_i++
+								break
+							}				
 						break
-					
-						#endregion
-					
-						#region // Faces Info
-					
 						case "f": 
 						
 							_c_line = string_delete(_c_line,1,2) 
@@ -127,66 +68,11 @@ const technicalContent = {
 							ds_grid_resize(_flist,ds_grid_width(_flist),ds_grid_height(_flist)+1)
 							_flist_i++
 									
-						break
-					
-						#endregion
-				
+						break				
 					}
-				
 				}
-			
+				
 			#endregion
-			
-			#region // _vbuffer
-				
-				var _vx,_vy,_vz,_u,_v,_nx,_ny,_nz
-			
-				for (var _i = 0; _i < ds_grid_height(_flist); _i++) {
-				
-					var _index = 0
-				
-					repeat(3){
-				
-						_vx = (_vert[# 0,_flist[# _index,_i]])
-						_vz = (_vert[# 1,_flist[# _index,_i]])
-						_vy = (_vert[# 2,_flist[# _index,_i]])
-				
-						_index += 1
-
-						_u = _vertuv[# 0,_flist[# _index,_i]]
-						_v = _vertuv[# 1,_flist[# _index,_i]]
-				
-						_index += 1
-				
-						// Normals are ignored for this project as it has shader-driven aesthetics.
-				
-						_nx = 0;
-						_ny = 0;
-						_nz = 1;
-					
-						scr_vertexdata(_vbuffer,_vx,_vy,_vz,_nx,_ny,_nz,_u,_v,c_white,1)
-				
-						_index += 1
-					}
-				
-				}
-			
-			#endregion
-			
-			#region // Remove grids and _vbuffer retrieving
-			 
-			ds_grid_destroy(_vert)
-			ds_grid_destroy(_vertuv)
-			ds_grid_destroy(_vertn)
-			ds_grid_destroy(_flist) 
-			 
-			vertex_end(_vbuffer)
-			vertex_freeze(_vbuffer)
-			
-			#endregion
-					
-			return _vbuffer
-		}
 		`
     },
     {
@@ -197,20 +83,15 @@ const technicalContent = {
       content: `
 		#region // Models list
 																
-			var _modelslist = ds_list_create()
-																
+			var _modelslist = ds_list_create()											
 			collision_rectangle_list(0,0,room_width,room_height,obj_model,false,false,_modelslist,false)
 				
-			// Load strings as keys
-				
 			for (var _n = 0; _n < ds_list_size(_modelslist); _n++){
-				with _modelslist[|_n] {
-									
+				with _modelslist[|_n] {			
 					var workindex = 0
 					if mod_txt_xpos = true {
 						workindex = (x/16) mod sprite_get_number(mod_txt)
-					}
-											
+					}					
 					mod_txt = sprite_get_texture(mod_txt,workindex)
 					if !ds_map_exists(other.lm_modelsmap,mod_id){
 						ds_map_add(other.lm_modelsmap,mod_id,scr_geo_builder(mod_id))
@@ -236,104 +117,50 @@ const technicalContent = {
       techTag: "Forward Kinematics, Procedural Animation, Vector Math, Dynamic Culling, Sprite Assembly",
       type: "code",
       content: `
-		// 1. Calculations (Forward Kinematics)
-
-		// Calculates positions and angles of each joint in real-time
-		function scr_draw_character(_dir, _angle) {
+		
+		// Example of torso 
+		
+		function scr_get_torso(_t_x,_t_y,_factor,lv_aux_ang,lv_disp_off,lv_hurtang){
 			
-			// Initial Setup 
-			var _xs = _dir; // Direction multiplier (1 or -1)
-			var _base_y = y - obj_game.pos_y_leg[perso_index];
-			
-			// a. LEGS (Frame Interpolation / Lerp)
-			var _l1_anim = obj_game.ang_leg1_anim1;
-			var _l2_anim = obj_game.ang_leg2_anim2;
-			var _torso_y = obj_game.tor_legs_y[anim_state];
-			
-			// Angular smoothing to avoid visual jitter during transitions
-			if (anim_state == 1 andand lv_frames % 1 < 1) {
-				lv_leg1_a += ((_l1_anim[ceil(lv_frames)] - lv_leg1_a) * 0.25);
-				lv_leg2_a += ((_l2_anim[ceil(lv_frames)] - lv_leg2_a) * 0.25);
-			} else {
-				lv_leg1_a = _l1_anim[floor(lv_frames)] * _xs;
-				lv_leg2_a = _l2_anim[floor(lv_frames)] * _xs;
-			}
-			
-			// Absolute position calculation for legs
-			var _l1_x = x + (obj_game.pos_x_l1[perso_index] * _xs);
-			var _l2_x = x - (obj_game.pos_x_l2[perso_index] * _xs);
+			var _ang = 0
+			var _t_ang = 0
 
-			// b. TORSO
-			var _t_ang = _angle / 3; // Smoothing factor for torso
-			if (_xs == -1) _t_ang = -_t_ang;
-			_t_ang += lv_disp_off; // Posture correction for recoil/pushback
-			
-			// c. ARMS and WEAPONS
-			var _a1_offset = obj_game.pos_d_a1[perso_index];
-			// Arm position using trigonometry
-			var _a1_x = _t_x + lengthdir_x(_a1_offset, 90 + (obj_game.pos_a_a1 * _xs) + _t_ang);
-			
-			// Character-specific logic (e.g., Character 4 has different recoil)
-			var _a1_ang = 0;
-			if (perso_index == 4) {
-				_a1_ang = clamp(_angle, 0, 230) - (lv_ret * 2);
-			} else {
-				_a1_ang = clamp(_angle, 0, 230) - (lv_disp_off * 5);
-			}
-			
-			// d. HEAD and ACCESSORIES
-			var _h_ang = clamp(_angle, 0, 210);
-			var _extra_pos = (_perso_index == 1) 
-				? _h_x + lengthdir_x(30, 132 * _xs + _h_ang) 
-				: 0; // Conditional position for unique accessories
-		}
-		__________________________________________________________________
+			_ang = _v1
 
-		// 2. Sprite Assembly
-
-		// Draws calculated parts applying Dynamic Culling
-
-		function render_character_parts() {
-			
-			// a. LEGS: Culling by state (Crouching)
-			if (!lv_duck) {
-				draw_sprite_ext(_l1, lv_frames, _l1_x, _l_y+_torso_y, _xs, 1, lv_leg1_a, c_white, 1);
-				draw_sprite_ext(_l2, lv_frames, _l2_x, _l_y+_torso_y, _xs, 1, lv_leg2_a, c_white, 1);
-			}
-
-			// b. TORSO: Culling by state (Reloading)
-			if (lv_mag_delay == 0) {
-				draw_sprite_ext(_t, lv_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
-			} else {
-				draw_sprite_ext(_tr, lv_reload_frames, _t_x, _t_y+_torso_y, _xs * gp_pscale, 1, _t_ang, c_white, 1);
-			}
-
-			// c. HEAD: Culling by state (Damage)
-			if (lv_hurtang > 0) {
-				draw_sprite_ext(_hface, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
-			} else {
-				draw_sprite_ext(_h, lv_caraframe, _h_x, _h_y+_torso_y, 1, 1, _h_ang, c_white, 1);
-			}
-
-			// d. ARMS AND WEAPONS: Complex conditional logic
-			if (lv_mag_delay == 0) {
-				// Arm 1 (Varies if recoil is active for Character 4)
-				if (perso_index == 4 andand lv_ret > 0) {
-					draw_sprite_ext(spr_sil_arm3, lv_frames, _a1_x, _a1_y+_torso_y, 1, 1, _a1_ang, c_white, 1);
-				} else {
-					draw_sprite_ext(_a1, lv_frames, _a1_x, _a1_y+_torso_y, 1, 1, _a1_ang, c_white, 1);
+			if _xs = 1 {
+				if _ang >= 0 and _ang <= 90 {
+					_t_ang = _ang * _factor
+					lv_aux_ang = _t_ang 
+				}
+					
+				else if _ang > 310 {
+					_t_ang = (_ang - 360) * _factor
+					lv_aux_ang = _t_ang 
+				}
+				else {
+					_t_ang = lv_aux_ang	
 				}
 				
-				// Weapon and Hand (Always visible if not reloading)
-				draw_sprite_ext(_w, lv_frames, _w_x, _w_y+_torso_y, 1, 1, _w_ang, c_white, 1);
-				draw_sprite_ext(_g, lv_frames, _g_x, _g_y+_torso_y, 1, 1, _g_ang, c_white, 1);
 			}
-
-			// e. EXTRAS (character 1)
-			if (perso_index == 1) {
-				draw_sprite_ext(spr_irma_extra, lv_irma_ex_frames, _e_x, _e_y, 1, 1, lv_irma_ex_ang, c_white, 1);
+			else if _xs = -1 {
+				if _ang >= 90 and _ang <= 230 {
+					_t_ang = (_ang - 180) * _factor
+					lv_aux_ang = _t_ang - (lv_disp_off * _xs)
+				}
+				else {
+					_t_ang = lv_aux_ang	
+				}
 			}
-		}`
+			
+			if sign(_xs) = sign(lv_aux_ang) {
+				lv_aux_ang = -lv_aux_ang 
+			}
+			
+			_t_ang += (lv_disp_off * _xs) + (lv_hurtang * -_xs)
+			
+			return _t_ang
+		}
+		`			
     },
     {
       title: "Slot-Based Spawn System",
@@ -341,61 +168,82 @@ const technicalContent = {
       techTag: "Spatial Partitioning, Collision Prevention, Dynamic Spawning",
       type: "code",
       content: `
-		// 1. Spawn Controller (obj_enemy_spawn): Generation Decision
+		// Region of Spawn Control Object
+		
+		#region // Spawning
 
-		// Verifies quantity limits and decides spawn side
-		if (order != -1) {
-			var _enemyType = staff[order];
-			var _side = choose(0, 1); // 0: Left, 1: Right
-			
-			// Global limit control (e.g., max enemies on screen)
-			var _currentCount = instance_number(obj_bot);
-			if (_currentCount < global.max_enemies) {
-				if (scr_genbirmen(_enemyType, _side)) {
-					// Calls position resolution script
-					// Spawn successful
-				}
+			if (lm_map_progress < 100 and instance_exists(obj_player) and obj_player.lv_area != noone) {
+				
+				var _area = obj_player.lv_area;
+				var _staff = _area.area_staff;
+				var _dice_min = clamp(round(global.gp_tension*4),0,3)
+										
+				var _dice = irandom_range(_dice_min,9);
+				var _index = scr_dice_get_index(_dice)
+					
+				#region // Spawn signal
+				
+					var _nbir = instance_number(obj_bot) - instance_number(obj_target)
+				
+					if _nbir < _area.area_max {
+						if (_area.area_rest) > 0 {
+							obj_enemy_spawn.area_og = _area;
+							obj_enemy_spawn.staff = _staff;
+							obj_enemy_spawn.order = _index;
+							obj_enemy_spawn.embos = _area.area_emb;
+						}
+						if (_area.area_rest == 0 and _area.area_cam == true) {
+							scr_cam_lock(false)
+						}
+					}
+						
+					alarm[1] = _area.area_cad; 
+				
+					show_debug_message(string("_area.area_rest: {0}",_area.area_rest))
+					show_debug_message(string("dv_hordebar_rest: {0}.",dv_hordebar_rest))
+				
+				#endregion
+
+				debug_show_orders = obj_enemy_spawn.order;
 			}
-			order = -1; // Reset order
-		}
+				
+			else {
+				alarm[1] = 60;
+			}
+
+		#endregion
+		
 		__________________________________________________________________
+		
+		// Extract of scr_place_solver()
+		
+		var _freeplace = (collision_rectangle(_xspawn-32, _yspawn-96, _xspawn+32, _yspawn+24, obj_collider, true, false) == noone);
 
-		// 2. Position Resolver (obj_game via scr_genbirmen): Placement Logic
-
-		// Searches for a free slot and validates physical space without collisions
-		function scr_genbirmen(_type, _side) {
-			// A. Logical Slot Assignment (Range)
-			var _slotIndex = get_slot_index(_type);
-			if (global.rangoset[_slotIndex, _side] != noone) {
-				_slotIndex = find_fallback_slot(_slotIndex, _side); // Find alternative if occupied
-				if (_slotIndex == -1) return false; // No logical space
-			}
-
-			// B. Physical Space Search (Zig-Zag Algorithm)
-			var _spawnY = initial_y;
-			var _offset = 16;
-			var _multiplier = 1;
-			var _solved = false;
-
-			// Searches up/down avoiding obstacles
-			while (!_solved andand abs(_multiplier) < 50) {
-				var _testY = _spawnY + (_offset * _multiplier);
-				if (no_collision_at(_spawnX, _testY)) {
-					_spawnY = _testY;
+		if (_freeplace) {
+			_solved = true;
+		} 
+		else {
+			var _offset_y = 16;
+			var _mult = 1;
+			
+			while (!_solved and abs(_mult) < 50) {
+				_freeplace = (collision_rectangle(_xspawn-32, _yspawn-96 + (_offset_y*_mult), _xspawn+32, _yspawn+24 + (_offset_y*_mult), obj_collider, true, false) == noone);
+				
+				if (_freeplace) {
+					_wherex = _xspawn;
+					_wherey = _yspawn + (_offset_y * _mult);
 					_solved = true;
 				} else {
-					_multiplier = (_multiplier < 0) ? abs(_multiplier) + 1 : -_multiplier; // Change direction
+					_mult = (_mult < 0) ? abs(_mult) + 1 : -_mult;
 				}
 			}
-			if (!_solved) return false; // No valid physical space
+		}
 
-			// C. Instantiation and Registration
-			var _enemy = instance_create_depth(_spawnX, _spawnY, depth, _type);
-			_enemy.assigned_slot = _slotIndex;
-			global.rangoset[_slotIndex, _side] = _enemy.id; // Mark slot as occupied
-			
-			return true;
-		}`
+		if (!_solved) {
+			return false; // No physical space avaliable
+		}
+		
+		`
     },
     {
       title: "Adaptive AI and Behavior",
@@ -412,70 +260,56 @@ const technicalContent = {
 	  techTag: "JSON, i18n, Buffer API, Dialogue System",
 	  type: "code",
 	  content: `
-		// 1.a Global JSON loading with automatic fallback
+		// JSON load
 		
-		global.text = scr_get_lang(os_get_language());
-		_____________________________________________________________________________________
-
-		// 1.b Importer Script Details
-
-		function scr_get_lang(_idioma = "es") {
+		function scr_get_lang(_lang = "en"){
 			if (!file_exists("gametext.json")) {
-				show_debug_message("Error: gametext.json not found");
+				show_debug_message("Error: gametext.json missing.");
 				return undefined;
 			}
 			
-			// Efficient reading via Buffer API
 			var buffer = buffer_load("gametext.json");
 			var json_string = buffer_read(buffer, buffer_string);
-			buffer_delete(buffer); // Immediate memory release
+			buffer_delete(buffer);
 			
 			var _alldata = json_parse(json_string);
 			
-			// Automatic fallback to 'es' if the target language doesn't exist
-			if (variable_struct_exists(_alldata, _idioma)) {
-				return _alldata[$ _idioma];
+			if (variable_struct_exists(_alldata,_lang)) {
+				show_debug_message("Success");
+				return _alldata[$ _lang];
 			}
-			return _alldata[$ "es"];
+			else {
+				show_debug_message("Error. Loading support language.");
+				return _alldata[$ "en"];	
+			}
 		}
-		_____________________________________________________________________________________
+		________________________________________________________________________________
 
-		// 2. Applied Example: Subtitle Rendering Logic
+		// Applied Example of use
 
 		#region // SUBTITLES
-
-		// Check current subtitle display timer
-		if (gp_subt_time > 1) {
-			gp_subt_time--;
-		} 
-		else {
-			// Timer expired: prepare next line
-			if (gp_subt_time == 1) {
-				if (map_diag_seq > 1) {
 					
-					// Advance dialogue index and decrement sequence
-					map_diag_index++;
-					map_diag_seq--;
-					
-					// Extract text from nested JSON to calculate reading time
-					// Deep access: Array -> Struct -> Struct -> String
-					var _texto_actual = gp_subt_conpac[gp_subt_conpac_index] [$ "content"] [$ "dialogo"];
-					var _strl = string_length(_texto_actual);
-					
-					// Dynamic timing: 3ms per character, clamped (min 70, max 270)
-					gp_subt_time = clamp(_strl * 3, 70, 270);
-					
-					// Reset character counter for typing effect
-					gp_subt_chars = 0;
-				} 
-				else {
-					// End of dialogue
-					gp_subt_time = 0;
+			if gp_subt_time > 1 {
+				gp_subt_time--
+			}
+						
+			else {
+				if gp_subt_time = 1 {
+					if map_diag_seq > 1 {
+						map_diag_index++
+						map_diag_seq--
+						var _strl = string_length(gp_subt_conpac[gp_subt_conpac_index][$ "content"][$ "dialog"]);
+						gp_subt_time = clamp(_strl*3,70,270)
+						gp_subt_chars = 0
+					}
+					else {
+						gp_subt_time = 0
+					}
 				}
 			}
-		}
-
-		#endregion`
+												
+		#endregion
+		`
 	}
   ]
 };
