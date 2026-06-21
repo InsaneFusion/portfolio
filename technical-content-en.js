@@ -18,37 +18,176 @@ const technicalContent = {
       techTag: "GameMaker Custom 3D, Vertex Buffers, .OBJ Parsing",
       type: "code",
       content: `
-		function scr_geo_builder(default_model)
-	  
-			// 1. Reading and Parsing the .OBJ file
-			var lines = model_id(); // returns a string. 
-			var vertex = ds_grid_create();
-			var normals = ds_grid_create();
-			var uvs = ds_grid_create();
-
-			// 2. Iteration and data extraction
-			for (line in lines) {
-				if (line starts with "v ") vertex.add(parse_vector(line));
-				if (line starts with "vn") normals.add(parse_vector(line));
-				if (line starts with "vt") uvs.add(parse_vector(line));
+		function scr_geo_builder(_file){
+	
+			#region // Turns model into string
+			
+			var _content = -1
+			
+			try {
+				 _content = _file()
+			}
+			catch (e) {
+				show_debug_message("FAILED INSTANCE=" + string(id));
+				show_debug_message("INSTANCE OBJ=" + string(object_index));
+				show_debug_message("ERROR=" + e.message);
 			}
 
-			// 3. Building the Vertex Buffer (Rendering)
-			var vbuf = vertex_create_buffer();
-			vertex_begin(vbuf, format);
+			_content = string_replace_all(_content, "\\r\\n", "\\n");
+			_content = string_replace_all(_content, "\\r", "");
 
-			for (face in faces) {
-				for (i = 0; i < 3; i++) {
-					vertex_position(vbuf, vertex[face.v[i]]);
-					vertex_normal(vbuf, normals[face.vn[i]]);
-					vertex_uv(vbuf, uvs[face.vt[i]]);
+			var _lines = string_split(_content, "\\n");
+			
+			#endregion 
+			
+			#region // Creates info grids
+			
+				var _vert = ds_grid_create(3,1)
+				var _vert_i = 0
+				var _vertuv = ds_grid_create(2,1)
+				var _vertuv_i = 0
+				var _vertn = ds_grid_create(3,1)
+				var _vertn_i = 0
+				var _flist = ds_grid_create(9,1)
+				var _flist_i = 0
+			
+			#endregion
+			
+			#region // Creates buffer
+				
+				var _vbuffer = vertex_create_buffer()
+				vertex_begin(_vbuffer, obj_game.v_format)
+			
+			#endregion
+				
+			#region // Sorting
+			
+				for (var _it = 0; _it < array_length(_lines); _it++){
+				
+					var _c_line = _lines[_it]
+					var _vals = -1
+				
+					switch string_char_at(_c_line,1) {
+					
+						#region // Vertex Info
+						
+						case "v": 
+						
+							switch string_char_at(_c_line,2) {
+						
+								#region	// Vertex Texture
+									case "t":
+										_c_line = string_delete(_c_line,1,3)
+										_vals = string_split_ext(_c_line,[" "],true,2)
+										ds_grid_add(_vertuv,0,_vertuv_i,real(_vals[0]))
+										ds_grid_add(_vertuv,1,_vertuv_i,real(_vals[1]))
+										ds_grid_resize(_vertuv,ds_grid_width(_vertuv),ds_grid_height(_vertuv)+1)
+										_vertuv_i++
+									break
+								#endregion	
+						
+								#region // Vertex Normals
+									case "n":
+										_c_line = string_delete(_c_line,1,3)
+										_vals = string_split_ext(_c_line,[" "],true,3)
+										ds_grid_add(_vertn,0,_vertn_i,real(_vals[0]))
+										ds_grid_add(_vertn,1,_vertn_i,real(_vals[1]))
+										ds_grid_add(_vertn,2,_vertn_i,real(_vals[2]))
+										ds_grid_resize(_vertn,ds_grid_width(_vertn),ds_grid_height(_vertn)+1)
+										_vertn_i++
+									break
+								#endregion
+						
+								#region // Vertex
+									case " ":
+										_c_line = string_delete(_c_line,1,2)
+										_vals = string_split_ext(_c_line,[" "],true,3)
+										ds_grid_add(_vert,0,_vert_i,real(_vals[0]))
+										ds_grid_add(_vert,1,_vert_i,real(_vals[2]))								
+										ds_grid_add(_vert,2,_vert_i,real(_vals[1]))
+										ds_grid_resize(_vert,ds_grid_width(_vert),ds_grid_height(_vert)+1)
+										_vert_i++
+									break
+								#endregion
+							}
+						
+						break
+					
+						#endregion
+					
+						#region // Faces Info
+					
+						case "f": 
+						
+							_c_line = string_delete(_c_line,1,2) 
+							_vals = string_split_ext(_c_line,[" ","/"],true,8) 
+							for (var _n = 0; _n < 9; _n++){
+								ds_grid_add(_flist,_n,_flist_i,real(_vals[_n])-1)
+							}
+							ds_grid_resize(_flist,ds_grid_width(_flist),ds_grid_height(_flist)+1)
+							_flist_i++
+									
+						break
+					
+						#endregion
+				
+					}
+				
 				}
-			}
-			vertex_end(vbuf);
-			vertex_freeze(vbuf);
+			
+			#endregion
+			
+			#region // _vbuffer
+				
+				var _vx,_vy,_vz,_u,_v,_nx,_ny,_nz
+			
+				for (var _i = 0; _i < ds_grid_height(_flist); _i++) {
+				
+					var _index = 0
+				
+					repeat(3){
+				
+						_vx = (_vert[# 0,_flist[# _index,_i]])
+						_vz = (_vert[# 1,_flist[# _index,_i]])
+						_vy = (_vert[# 2,_flist[# _index,_i]])
+				
+						_index += 1
 
-			return vbuf;
-		}`
+						_u = _vertuv[# 0,_flist[# _index,_i]]
+						_v = _vertuv[# 1,_flist[# _index,_i]]
+				
+						_index += 1
+				
+						// Normals are ignored for this project as it has shader-driven aesthetics.
+				
+						_nx = 0;
+						_ny = 0;
+						_nz = 1;
+					
+						scr_vertexdata(_vbuffer,_vx,_vy,_vz,_nx,_ny,_nz,_u,_v,c_white,1)
+				
+						_index += 1
+					}
+				
+				}
+			
+			#endregion
+			
+			#region // Remove grids and _vbuffer retrieving
+			 
+			ds_grid_destroy(_vert)
+			ds_grid_destroy(_vertuv)
+			ds_grid_destroy(_vertn)
+			ds_grid_destroy(_flist) 
+			 
+			vertex_end(_vbuffer)
+			vertex_freeze(_vbuffer)
+			
+			#endregion
+					
+			return _vbuffer
+		}
+		`
     },
     {
       title: "Lazy Loading Asset Pipeline and Obfuscation",
@@ -56,28 +195,41 @@ const technicalContent = {
       techTag: "Obfuscation, Memory Management, Lazy Loading",
       type: "code",
       content: `
-		// 1. Detecting model instances in the room
-		var model_instances = find_instances_in_room(obj_model);
-
-		// 2. Global cache map
-		if (!global.model_cache) global.model_cache = ds_map_create();
-
-		for (var inst in model_instances) {
-			var model_id = inst.mod_id;
+		#region // Models list
+																
+			var _modelslist = ds_list_create()
+																
+			collision_rectangle_list(0,0,room_width,room_height,obj_model,false,false,_modelslist,false)
 				
-			// 3. On-demand loading only if not already in cache
-			if (!ds_map_exists(global.model_cache, model_id)) {
-				var buffer = scr_geo_builder(model_id); 
-				ds_map_add(global.model_cache, model_id, buffer);
+			// Load strings as keys
+				
+			for (var _n = 0; _n < ds_list_size(_modelslist); _n++){
+				with _modelslist[|_n] {
+									
+					var workindex = 0
+					if mod_txt_xpos = true {
+						workindex = (x/16) mod sprite_get_number(mod_txt)
+					}
+											
+					mod_txt = sprite_get_texture(mod_txt,workindex)
+					if !ds_map_exists(other.lm_modelsmap,mod_id){
+						ds_map_add(other.lm_modelsmap,mod_id,scr_geo_builder(mod_id))
+					}
+				}
 			}
-			
-			// 4. Assign the shared buffer to the instance
-			inst.mod_vbuffer = ds_map_find_value(global.model_cache, model_id);
-		}
-
-		// 5. Resource cleanup
-		// ds_map_destroy(global.model_cache);`
-    },
+								
+			for (var _o = 0; _o < ds_list_size(_modelslist); _o++){
+				with _modelslist[|_o] {
+					if ds_map_exists(other.lm_modelsmap,mod_id){
+						mod_vbuffer = ds_map_find_value(other.lm_modelsmap,mod_id)
+					}
+				}
+			}
+								
+			ds_list_destroy(_modelslist)
+								
+		#endregion`
+		},
     {
       title: "Modular Procedural Rendering System",
       description: "To achieve a fluid animation system without relying on pre-rendered frames, I developed a sprite assembly engine based on <em>hierarchical articulation</em> (Forward Kinematics). The character is constructed frame-by-frame as a <em>puppet</em>, where each part (legs, torso, arms, head) is calculated in real-time using position and rotation vectors.<br><br>The system implements:<br>1. <strong>Smooth Angular Interpolation:</strong> <em>lerp</em> algorithms to smooth transitions between animation frames, avoiding visual <em>jitter</em>.<br>2. <strong>Dynamic Culling:</strong> Body parts are hidden or shown based on state (e.g., weapon charge, damage, crouching), optimizing rendering.<br>3. <strong>Visual Effects Management:</strong> Specific logic for overlays like damage faces or unique character accessories.<br><br>This architecture allows for infinite pose variability and instant response to player input, maintaining optimal performance by avoiding the loading of large spritesheets.<br><br>The script combines position calculation logic with conditional rendering, demonstrating full control over the character's visual geometry.",
